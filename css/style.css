@@ -181,6 +181,7 @@ p {
     width: 1.2rem;
     height: 1.2rem;
     margin-top: 0.25rem;
+    margin-left: 0px !important;
 }
 
 .form-check-label {
@@ -814,6 +815,207 @@ footer a:hover {
     border-left: 4px solid #4299e1 !important;
 }
 
+.high-contrast .alert-success {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-left: 4px solid #ffcc00 !important;
+    border: 1px solid #ffcc00 !important;
+}
+
+.high-contrast .thank-you-container {
+    background-color: #222 !important;
+    color: #fff !important;
+    border: 1px solid #666 !important;
+}
+
+.high-contrast .thank-you-container .alert-success {
+    background-color: #222 !important;
+    color: #fff !important;
+    border: 1px solid #ffcc00 !important;
+}
+
+.high-contrast .thank-you-container h2 {
+    color: #ffcc00 !important;
+}
+
 .high-contrast .invalid-feedback {
     color: #f56565 !important;
+}
+
+/* Neue Hover-Regel für .col-12 .form-check.mb-3.ai-style-change-1 */
+.col-12 .form-check.mb-3.ai-style-change-1:hover {
+    background-color: #444 !important;
+    border-color: #666 !important;
+}
+
+/* Optional: Ändere auch den Hintergrund der Checkbox beim Hover, wenn benötigt */
+.col-12 .form-check.mb-3.ai-style-change-1:hover .form-check-input {
+    background-color: #444 !important;
+}
+
+/* Radio-Buttons nicht als ungültig markieren, bis sie explizit überprüft wurden */
+.form-check-input[type="radio"]:not(.was-submitted):invalid {
+    border-color: #ced4da !important;
+}
+
+/* Erst nach Absendeversuchen die rote Umrandung anzeigen */
+.was-validated .form-check-input[type="radio"]:invalid {
+    border-color: var(--bs-form-invalid-border-color);
+}
+
+/* Alle Formularelemente nicht als ungültig markieren, bis sie explizit überprüft wurden */
+.form-control:not(.was-submitted):invalid,
+.form-select:not(.was-submitted):invalid,
+.form-check-input:not(.was-submitted):invalid,
+textarea:not(.was-submitted):invalid {
+    border-color: #ced4da !important;
+    background-image: none !important;
+}
+
+/* Erst nach Absendeversuchen die rote Umrandung und Hintergrund anzeigen */
+.was-validated .form-control:invalid,
+.was-validated .form-select:invalid,
+.was-validated .form-check-input:invalid,
+.was-validated textarea:invalid {
+    border-color: var(--bs-form-invalid-border-color);
+}
+
+/* Alle Labels für Formularelemente normal anzeigen, nicht rot */
+.form-check-label {
+    color: #333 !important;
+}
+
+/* Auch im validierten Zustand sollen die Labels normalen Text haben */
+.was-validated .form-check-label,
+.was-validated .form-label,
+.is-invalid ~ .form-check-label,
+.form-check-input.is-invalid ~ .form-check-label {
+    color: #333 !important;
+}
+
+/* Für High-Contrast-Modus separat definieren */
+.high-contrast .form-check-label {
+    color: #fff !important;
+}
+
+/* Fehlermeldungen (invalid-feedback) weiterhin rot lassen */
+.invalid-feedback {
+    color: var(--bs-form-invalid-color);
+}
+
+/* Entfernen des grünen Rahmens und Häkchens vom Kommentarfeld */
+#comments,
+#comments.is-valid,
+.was-validated #comments:valid {
+    border-color: #ced4da !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+/* Generell die automatische Validierungsanzeige für Textareas deaktivieren */
+textarea.form-control.is-valid,
+.was-validated textarea.form-control:valid {
+    border-color: #ced4da !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+/* Anpassungen für das Kommentarfeld im High-Contrast-Modus (Dark Mode) */
+.high-contrast textarea.form-control,
+.high-contrast #comments {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-color: #666 !important;
+}
+
+/* Placeholder-Text im Dark Mode anpassen */
+.high-contrast textarea.form-control::placeholder,
+.high-contrast #comments::placeholder {
+    color: #aaa !important;
+}
+
+/* Fokus-Zustand im Dark Mode */
+.high-contrast textarea.form-control:focus,
+.high-contrast #comments:focus {
+    border-color: #ffcc00 !important;
+    box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.25) !important;
+}
+
+/* Labels im Dark Mode anpassen */
+.high-contrast .form-label {
+    color: #fff !important;
+}
+
+/* Speziell das Label für das Kommentarfeld stylen */
+.high-contrast label[for="comments"] {
+    color: #fff !important;
+    font-weight: 600;
+}
+
+/* Optionale Anmerkung in Klammern anders hervorheben */
+.high-contrast label[for="comments"]:after {
+    content: " ";
+}
+
+.high-contrast label[for="comments"] span,
+.high-contrast label[for="comments"] small {
+    color: #aaa !important;
+    font-weight: normal;
+}
+
+/* Positionierung des Abbrechen-Button-Containers */
+#cancel-button-container {
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+    order: 999; /* Sorgt dafür, dass dieser Container in Flex-Layouts als letztes kommt */
+}
+
+/* Styling für den Abbrechen-Button */
+#cancel-button {
+    padding: 0.8rem 2rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+    transition: all 0.3s ease;
+}
+
+#cancel-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Wenn Flex-Container für die Seiteninhalte verwendet wird */
+.main-content-padding {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Dark Mode Anpassungen für den Button */
+.high-contrast #cancel-button {
+    background-color: #991b1b !important;
+    border-color: #fff !important;
+    color: #fff !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.high-contrast #cancel-button:hover {
+    background-color: #b91c1c !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+}
+
+/* Verstecke leere Fragen-Sektion */
+.question-section:has(#content-questions.d-none) {
+    display: none !important;
+}
+
+/* Alternative Lösung für Browser, die :has() nicht unterstützen */
+#content-questions.d-none + .question-section,
+#content-questions.d-none {
+    display: none !important;
+}
+
+/* Verstecke die leere Fragen-Sektion auch, wenn sie keine sichtbaren Kinder hat */
+.question-section:has(#content-questions:empty),
+.question-section:has(#content-questions > .content-questions-placeholder:only-child) {
+    display: none !important;
 }

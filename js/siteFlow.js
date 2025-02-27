@@ -19,7 +19,18 @@ document.addEventListener("DOMContentLoaded", function() {
     const cancelButton = document.getElementById("cancel-button");
     
     // Variablen für den Ablauf
-    let currentPhase = 0; // 0 = Einweisung, 1 = Vorab-Fragen, 2 = Text 1, 3 = Fragen zu Text 1, 4 = Text 2, 5 = Fragen zu Text 2, 6 = Abschluss
+    // Neue Phasen:
+    // 0 = Einweisung
+    // 1 = Vorab-Fragen
+    // 2 = Text 1
+    // 3 = Fragen zum Inhalt für Text 1
+    // 4 = Fragen zur Leseempfindung für Text 1
+    // 5 = Text 2
+    // 6 = Fragen zum Inhalt für Text 2
+    // 7 = Fragen zur Leseempfindung für Text 2
+    // 8 = Optionale Fragen zum ersten Text (falls implementiert)
+    // 9 = Abschluss
+    let currentPhase = 0;
     let currentTextNumber = 1;
     let selectedFonts = [];
     let readingTimes = [];
@@ -32,14 +43,19 @@ document.addEventListener("DOMContentLoaded", function() {
         text1: {
             font: "",
             readingTime: 0,
-            questions: {}
+            readingExperience: {},
+            contentQuestions: {}
         },
         text2: {
             font: "",
             readingTime: 0,
-            questions: {}
+            readingExperience: {},
+            contentQuestions: {}
         }
     };
+    
+    // Flag für optionale Fragen zum ersten Text
+    let showOptionalQuestionsForText1 = false; // Kann auf true gesetzt werden, wenn gewünscht
     
     // Timer-Variablen
     let startTime;
@@ -99,9 +115,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const availableFonts = [
         { name: "Arial", class: "font-arial" },
         { name: "Times New Roman", class: "font-times" },
-        { name: "Courier New", class: "font-courier" },
         { name: "Comic Sans MS", class: "font-comic" },
-        { name: "Georgia", class: "font-georgia" },
         { name: "OpenDyslexic", class: "font-opendyslexic" }
     ];
     
@@ -254,6 +268,43 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     }
     
+    // Funktion zum Anzeigen der Fragen zur Leseempfindung
+    function showReadingExperienceQuestions(textNumber) {
+        questionsContainer.classList.remove("d-none");
+        
+        // Titel anpassen
+        questionsTitle.textContent = `Fragen zur Leseempfindung - Text ${textNumber}`;
+        
+        // Inhaltsfragen ausblenden
+        contentQuestions.classList.add("d-none");
+        
+        // Sicherstellen, dass die Leseempfindungsfragen sichtbar sind
+        const readingExperienceSection = document.querySelector(".question-section:first-child");
+        if (readingExperienceSection) {
+            readingExperienceSection.classList.remove("d-none");
+        }
+    }
+    
+    // Funktion zum Anzeigen der Inhaltsfragen
+    function showContentQuestions(textNumber) {
+        questionsContainer.classList.remove("d-none");
+        
+        // Titel anpassen
+        questionsTitle.textContent = `Fragen zum Inhalt - Text ${textNumber}`;
+        
+        // Leseempfindungsfragen ausblenden
+        const readingExperienceSection = document.querySelector(".question-section:first-child");
+        if (readingExperienceSection) {
+            readingExperienceSection.classList.add("d-none");
+        }
+        
+        // Inhaltsfragen anzeigen
+        contentQuestions.classList.remove("d-none");
+        
+        // Inhaltsfragen für den entsprechenden Text erstellen
+        createContentQuestions(textNumber);
+    }
+    
     // Funktion zum Erstellen der Inhaltsfragen für den jeweiligen Text
     function createContentQuestions(textNumber) {
         contentQuestions.innerHTML = "";
@@ -329,8 +380,8 @@ document.addEventListener("DOMContentLoaded", function() {
     function updateProgressBar() {
         if (!progressBar) return;
         
-        // Insgesamt 7 Phasen (0-6), also Fortschritt in Prozent berechnen
-        const totalPhases = 6; // 0-based zählung, daher 6 anstatt 7
+        // Insgesamt 10 Phasen (0-9), also Fortschritt in Prozent berechnen
+        const totalPhases = 9; // 0-based zählung, daher 9 anstatt 10
         const progressPercent = Math.round((currentPhase / totalPhases) * 100);
         
         // Fortschritt aktualisieren
@@ -373,25 +424,31 @@ document.addEventListener("DOMContentLoaded", function() {
                 
                 // Timer starten
                 startTimer();
+                currentPhase = 2;
                 break;
                 
-            case 2: // Text 1 -> Fragen zu Text 1
+            case 2: // Text 1 -> Fragen zum Inhalt für Text 1
                 readingContainer.classList.add("d-none");
-                questionsContainer.classList.remove("d-none");
                 
                 // Timer stoppen und Lesezeit speichern
                 const readingTime1 = stopTimer();
                 readingTimes[0] = readingTime1;
                 userData.text1.readingTime = readingTime1;
                 
-                // Titel anpassen
-                questionsTitle.textContent = "Fragen zu Text 1";
+                // Inhaltsfragen für Text 1 anzeigen
+                showContentQuestions(1);
                 
-                // Inhaltsfragen für Text 1 erstellen
-                createContentQuestions(1);
+                currentPhase = 3;
                 break;
                 
-            case 3: // Fragen zu Text 1 -> Text 2
+            case 3: // Fragen zum Inhalt für Text 1 -> Fragen zur Leseempfindung für Text 1
+                // Fragen zur Leseempfindung anzeigen
+                showReadingExperienceQuestions(1);
+                
+                currentPhase = 4;
+                break;
+                
+            case 4: // Fragen zur Leseempfindung für Text 1 -> Text 2
                 questionsContainer.classList.add("d-none");
                 readingContainer.classList.remove("d-none");
                 
@@ -404,26 +461,47 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Timer zurücksetzen und neu starten
                 readingTimeInSeconds = 0;
                 startTimer();
+                
+                currentPhase = 5;
                 break;
                 
-            case 4: // Text 2 -> Fragen zu Text 2
+            case 5: // Text 2 -> Fragen zum Inhalt für Text 2
                 readingContainer.classList.add("d-none");
-                questionsContainer.classList.remove("d-none");
                 
                 // Timer stoppen und Lesezeit speichern
                 const readingTime2 = stopTimer();
                 readingTimes[1] = readingTime2;
                 userData.text2.readingTime = readingTime2;
                 
-                // Titel anpassen
-                questionsTitle.textContent = "Fragen zu Text 2";
+                // Inhaltsfragen für Text 2 anzeigen
+                showContentQuestions(2);
                 
-                // Inhaltsfragen für Text 2 erstellen
-                createContentQuestions(2);
+                currentPhase = 6;
                 break;
                 
-            case 5: // Fragen zu Text 2 -> Abschluss
+            case 6: // Fragen zum Inhalt für Text 2 -> Fragen zur Leseempfindung für Text 2
+                // Fragen zur Leseempfindung anzeigen
+                showReadingExperienceQuestions(2);
+                
+                currentPhase = 7;
+                break;
+                
+            case 7: // Fragen zur Leseempfindung für Text 2 -> Optionale Fragen zum ersten Text oder Abschluss
+                if (showOptionalQuestionsForText1) {
+                    // Hier könnten optionale Fragen zum ersten Text angezeigt werden
+                    // Für jetzt überspringen wir diese Phase
+                    currentPhase = 8;
+                    proceedToNextPhase(); // Direkt zur nächsten Phase weitergehen
+                } else {
+                    // Direkt zum Abschluss
+                    showThankYouMessage();
+                    currentPhase = 9;
+                }
+                break;
+                
+            case 8: // Optionale Fragen zum ersten Text -> Abschluss
                 showThankYouMessage();
+                currentPhase = 9;
                 break;
         }
         
@@ -531,30 +609,64 @@ document.addEventListener("DOMContentLoaded", function() {
             // Formulardaten sammeln
             const formData = new FormData(questionsForm);
             
-            if (currentPhase === 2) { // Fragen zu Text 1
-                userData.text1.questions = {
+            // Je nach Phase unterschiedliche Daten speichern
+            if (currentPhase === 3) { // Fragen zum Inhalt für Text 1
+                userData.text1.contentQuestions = evaluateAnswers(1, formData);
+            } else if (currentPhase === 4) { // Fragen zur Leseempfindung für Text 1
+                userData.text1.readingExperience = {
                     readability: formData.get("readability"),
                     effort: formData.get("effort"),
                     fontLiking: formData.get("fontLiking"),
-                    comments: formData.get("comments"),
-                    contentAnswers: evaluateAnswers(1, formData)
+                    comments: formData.get("comments")
                 };
-                
-                // Formular zurücksetzen
-                questionsForm.reset();
-                
-            } else if (currentPhase === 4) { // Fragen zu Text 2
-                userData.text2.questions = {
+            } else if (currentPhase === 6) { // Fragen zum Inhalt für Text 2
+                userData.text2.contentQuestions = evaluateAnswers(2, formData);
+            } else if (currentPhase === 7) { // Fragen zur Leseempfindung für Text 2
+                userData.text2.readingExperience = {
                     readability: formData.get("readability"),
                     effort: formData.get("effort"),
                     fontLiking: formData.get("fontLiking"),
-                    comments: formData.get("comments"),
-                    contentAnswers: evaluateAnswers(2, formData)
+                    comments: formData.get("comments")
                 };
             }
             
+            // Formular zurücksetzen für die nächste Phase
+            questionsForm.reset();
+            
             proceedToNextPhase();
         });
+    }
+    
+    // Funktion zum Ausblenden leerer Sektionen
+    function hideEmptyQuestionSections() {
+        const contentQuestionsDiv = document.getElementById('content-questions');
+        if (contentQuestionsDiv) {
+            const parentSection = contentQuestionsDiv.closest('.question-section');
+            if (parentSection && (contentQuestionsDiv.classList.contains('d-none') || contentQuestionsDiv.children.length === 0)) {
+                parentSection.style.display = 'none';
+            } else if (parentSection) {
+                parentSection.style.display = '';
+            }
+        }
+    }
+    
+    // Diese Funktion nach dem Laden der Seite und nach dem Aktualisieren der Fragen aufrufen
+    hideEmptyQuestionSections();
+    
+    // Beobachter für Änderungen an content-questions einrichten
+    const contentQuestionsDiv = document.getElementById('content-questions');
+    if (contentQuestionsDiv) {
+        const observer = new MutationObserver(hideEmptyQuestionSections);
+        observer.observe(contentQuestionsDiv, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+    }
+    
+    // Vorhandene createContentQuestions-Funktion erweitern
+    const originalCreateContentQuestions = createContentQuestions;
+    if (typeof createContentQuestions === 'function') {
+        createContentQuestions = function() {
+            originalCreateContentQuestions.apply(this, arguments);
+            hideEmptyQuestionSections();
+        };
     }
 });
 
