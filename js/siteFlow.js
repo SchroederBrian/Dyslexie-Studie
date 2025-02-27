@@ -201,6 +201,9 @@ document.addEventListener("DOMContentLoaded", function() {
         questionsContainer.classList.add("d-none");
         cancelButtonContainer.classList.add("d-none");
         
+        // Fortschrittsanzeige ausblenden
+        progressContainer.classList.add("d-none");
+        
         // Falls es bereits eine Dankesmeldung gibt, diese entfernen
         const existingThankYou = document.querySelector(".thank-you-container");
         if (existingThankYou) {
@@ -517,6 +520,7 @@ document.addEventListener("DOMContentLoaded", function() {
         content.classList.add("d-none");
         formular.classList.add("d-none");
         cancelButtonContainer.classList.add("d-none");
+        progressContainer.classList.add("d-none"); // Fortschrittsanzeige ausblenden
         
         // Daten aus dem Cookie laden
         try {
