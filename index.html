@@ -5,26 +5,261 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KJSH Lernen Umfrage</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
-
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
+    <!-- OpenDyslexic Schriftart -->
+    <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet">
+
+    <!-- Marked.js für Markdown-Verarbeitung -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <h1>Welcome to my website</h1>
-    
-    <!--  -->>
+    <!-- Header -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1>KJSH Lernen Umfrage</h1>
+            </div>
+        </div>
+    </div>
 
+    <!-- 1. Einweisung -->
+    <div id="content" class="container mt-4 rounded shadow-sm">
+        <div class="row">
+            <div class="col-12 text-center">
+                <p>Hallo,</p>
+                <p>im Rahmen meines Studiums führe ich eine Umfrage durch, um herauszufinden, wie verschiedene Schriftarten die Lesezeit und den Lernprozess beeinflussen. Dazu bitte ich um Ihre Unterstützung.</p>
+                <p><strong>Ablauf der Umfrage:</strong></p>
+                <p>Sie werden zwei Kurzgeschichten in unterschiedlichen Schriftarten lesen. Es wird gemessen, wie lange Sie zum Lesen benötigen. Bitte lesen Sie die Texte sorgfältig und nicht nur oberflächlich.</p>
+                <p>Anschließend beantworten Sie einige Fragen zum Text und zu Ihrem Leseerlebnis.</p>
+                <p>Die Teilnahme ist freiwillig. Sie können die Umfrage jederzeit abbrechen (über den Abbrechen-Button am Ende der Umfrage). Dadurch werden alle bisher gespeicherten Daten gelöscht.</p>
+                <p>Vielen Dank für Ihre Unterstützung!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Datenschutz-Formular -->
+    <div id="formular" class="container mt-4 bg-light p-4 rounded shadow-sm">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Hiermit akzeptiere ich die <a href="/datenschutz.html">Datenschutzerklärung</a>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Weiter zur Umfrage</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container für den Abbrechen-Button (zunächst versteckt) -->
+    <div id="cancel-button-container" class="container mt-4 text-center d-none">
+        <div class="row">
+            <div class="col-12">
+                <button id="cancel-button" class="btn btn-danger">Umfrage abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Vorab-Fragen (Alter, Geschlecht) -->
+    <div id="demographics-container" class="container mt-4 bg-light p-4 rounded shadow-sm d-none">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-4">Vorab-Fragen</h2>
+                <form id="demographics-form">
+                    <!-- Alter -->
+                    <div class="mb-3">
+                        <label for="age" class="form-label">Alter:</label>
+                        <select class="form-select" id="age" name="age" required>
+                            <option value="" selected disabled>Bitte wählen</option>
+                            <option value="under18">Unter 18</option>
+                            <option value="18-25">18-25</option>
+                            <option value="26-35">26-35</option>
+                            <option value="36-45">36-45</option>
+                            <option value="46-55">46-55</option>
+                            <option value="56-65">56-65</option>
+                            <option value="above65">Über 65</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Geschlecht -->
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Geschlecht:</label>
+                        <select class="form-select" id="gender" name="gender" required>
+                            <option value="" selected disabled>Bitte wählen</option>
+                            <option value="male">Männlich</option>
+                            <option value="female">Weiblich</option>
+                            <option value="diverse">Divers</option>
+                            <option value="no-answer">Keine Angabe</option>
+                        </select>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Weiter zum Text</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Text mit Lesezeit -->
+    <div id="reading-container" class="container mt-4 bg-light p-4 rounded shadow-sm d-none">
+        <!-- Timer-Anzeige -->
+        <div class="row mb-3">
+            <div class="col-12 text-center">
+                <div id="timer" class="timer-display">Lesezeit: 00:00</div>
+            </div>
+        </div>
+        
+        <div id="text-container" class="row">
+            <div class="col-12">
+                <!-- Hier wird der Text dynamisch eingefügt -->
+            </div>
+        </div>
+        
+        <!-- Container für den Fertig-Button -->
+        <div id="stop-button-container" class="row mt-5 mb-4">
+            <div class="col-12 text-center">
+                <button id="stop-button" class="btn btn-success stop-button">FERTIG GELESEN</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 4 & 5. Fragen zur Leseempfindung und zum Inhalt -->
+    <div id="questions-container" class="container mt-4 bg-light p-4 rounded shadow-sm d-none">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-4" id="questions-title">Fragen zum Text</h2>
+                <form id="questions-form">
+                    <h3 class="mt-4 mb-3">Fragen zur Leseempfindung</h3>
+                    
+                    <!-- Frage 1 -->
+                    <div class="mb-4">
+                        <h4>Wie gut konnten Sie den Text lesen?</h4>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="readability" id="readability1" value="1" required>
+                            <label class="form-check-label" for="readability1">1 (sehr schlecht)</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="readability" id="readability2" value="2">
+                            <label class="form-check-label" for="readability2">2</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="readability" id="readability3" value="3">
+                            <label class="form-check-label" for="readability3">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="readability" id="readability4" value="4">
+                            <label class="form-check-label" for="readability4">4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="readability" id="readability5" value="5">
+                            <label class="form-check-label" for="readability5">5 (sehr gut)</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Frage 2 -->
+                    <div class="mb-4">
+                        <h4>Wie anstrengend war das Lesen?</h4>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="effort" id="effort1" value="1" required>
+                            <label class="form-check-label" for="effort1">1 (sehr anstrengend)</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="effort" id="effort2" value="2">
+                            <label class="form-check-label" for="effort2">2</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="effort" id="effort3" value="3">
+                            <label class="form-check-label" for="effort3">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="effort" id="effort4" value="4">
+                            <label class="form-check-label" for="effort4">4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="effort" id="effort5" value="5">
+                            <label class="form-check-label" for="effort5">5 (gar nicht anstrengend)</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Frage 3 -->
+                    <div class="mb-4">
+                        <h4>Wie hat Ihnen die Schriftart gefallen?</h4>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="fontLiking" id="fontLiking1" value="1" required>
+                            <label class="form-check-label" for="fontLiking1">1 (gar nicht)</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="fontLiking" id="fontLiking2" value="2">
+                            <label class="form-check-label" for="fontLiking2">2</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="fontLiking" id="fontLiking3" value="3">
+                            <label class="form-check-label" for="fontLiking3">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="fontLiking" id="fontLiking4" value="4">
+                            <label class="form-check-label" for="fontLiking4">4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="fontLiking" id="fontLiking5" value="5">
+                            <label class="form-check-label" for="fontLiking5">5 (sehr gut)</label>
+                        </div>
+                    </div>
+                    
+                    <h3 class="mt-5 mb-3">Fragen zum Textinhalt</h3>
+                    
+                    <!-- Die Inhaltsfragen werden dynamisch je nach Text hinzugefügt -->
+                    <div id="content-questions">
+                        <!-- Hier werden die inhaltlichen Fragen dynamisch eingefügt -->
+                    </div>
+                    
+                    <!-- Kommentarfeld -->
+                    <div class="mb-4 mt-4">
+                        <label for="comments" class="form-label">Weitere Anmerkungen (optional):</label>
+                        <textarea class="form-control" id="comments" name="comments" rows="3"></textarea>
+                    </div>
+                    
+                    <!-- Submit-Button -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Weiter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Danksagung (wird dynamisch eingefügt) -->
+
+    <!-- Footer -->
+    <footer class="mt-5 bg-light py-3">
+        <!-- Container -->
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <!-- Copyright -->
+                    <p>© 2025 Tjorve Großmann</p>
+                    <!-- Impressum -->
+                    <a href="impressum.html">Impressum</a>
+                    <!-- Datenschutz -->
+                    <a href="/datenschutz.html">Datenschutz</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 
     <!-- ################ -->
     <!-- Bootstrap Script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
     <!-- Script -->
-    <script src="script.js"></script>
+    <script src="/js/siteFlow.js"></script>
 </body>
 </html>
 

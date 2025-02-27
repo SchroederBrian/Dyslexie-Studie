@@ -1,1 +1,262 @@
+/* Grundlegendes Styling für die Umfrage-Website */
 
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+    padding-bottom: 5rem;
+}
+
+/* Header-Styling */
+.header {
+    margin-bottom: 2rem;
+}
+
+/* Container-Styling */
+.container {
+    margin-bottom: 2rem;
+}
+
+/* Text-Styling */
+h1, h2, h3, h4, h5, h6 {
+    color: #0d6efd;
+    margin-bottom: 1rem;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+/* Formular-Styling */
+.form-check {
+    margin-bottom: 0.5rem;
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+/* Timer-Styling */
+.timer-display {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #0d6efd;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: rgba(13, 110, 253, 0.1);
+    display: inline-block;
+}
+
+/* Button-Styling */
+.btn {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.stop-button {
+    padding: 1rem 2rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.stop-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Fragen-Styling */
+.question-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* Footer-Styling */
+footer {
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+    border-top: 1px solid #dee2e6;
+}
+
+footer a {
+    margin: 0 1rem;
+    color: #6c757d;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #0d6efd;
+    text-decoration: underline;
+}
+
+/* Anpassungen für Text-Container */
+.text-content {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 2rem;
+    line-height: 1.8;
+}
+
+.text-content h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #0d6efd;
+}
+
+.text-content h2, .text-content h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    color: #0d6efd;
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .text-content {
+        padding: 1.5rem;
+    }
+    
+    .stop-button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+    }
+}
+
+/* Anpassungen für die Schriftarten */
+.font-arial {
+    font-family: Arial, sans-serif;
+}
+
+.font-times {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.font-courier {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.font-comic {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.font-georgia {
+    font-family: Georgia, serif;
+}
+
+.font-opendyslexic {
+    font-family: 'OpenDyslexic', sans-serif;
+}
+
+/* Danksagung-Styling */
+.thank-you-container {
+    animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.thank-you-container .alert-success {
+    padding: 2rem;
+}
+
+.thank-you-container h2 {
+    margin-bottom: 1.5rem;
+}
+
+/* Markdown-Formatierung verbessern */
+.text-content {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.text-content h1, .text-content h2, .text-content h3 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    color: #0d6efd;
+}
+
+.text-content blockquote {
+    padding-left: 1rem;
+    border-left: 0.25rem solid #0d6efd;
+    color: #6c757d;
+}
+
+.text-content code {
+    background-color: #f8f9fa;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+}
+
+.text-content pre {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    overflow-x: auto;
+}
+
+.text-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+.text-content ul, .text-content ol {
+    padding-left: 2rem;
+}
+
+/* Stil für den Stop-Button */
+.stop-button {
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Timer-Anzeige */
+.timer-display {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #0d6efd;
+    margin-bottom: 1rem;
+}
+
+/* Abstand für Footer */
+body {
+    padding-bottom: 5rem;
+}
+
+/* Schriftarten für die Texte */
+.font-arial {
+    font-family: Arial, sans-serif;
+}
+
+.font-times {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.font-courier {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.font-comic {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.font-georgia {
+    font-family: Georgia, serif;
+}
