@@ -24,7 +24,11 @@ document.addEventListener("DOMContentLoaded", function() {
     let selectedFonts = [];
     let readingTimes = [];
     let userData = {
-        demographics: {},
+        demographics: {
+            age: "",
+            gender: "",
+            hasDyslexia: ""
+        },
         text1: {
             font: "",
             readingTime: 0,
@@ -41,6 +45,10 @@ document.addEventListener("DOMContentLoaded", function() {
     let startTime;
     let timerInterval;
     let readingTimeInSeconds = 0;
+    
+    // Fortschrittsbalken-Element
+    const progressBar = document.getElementById("progress-bar");
+    const progressContainer = document.getElementById("progress-container");
     
     // Textdateien und Inhaltsfragen
     const textFiles = ["assets/text1.txt", "assets/text2.txt"];
@@ -317,19 +325,40 @@ document.addEventListener("DOMContentLoaded", function() {
         return results;
     }
     
-    // Funktion zum Fortschreiten zum nächsten Schritt
-    function proceedToNextPhase() {
-        currentPhase++;
+    // Funktion zum Aktualisieren des Fortschrittsbalkens
+    function updateProgressBar() {
+        if (!progressBar) return;
         
+        // Insgesamt 7 Phasen (0-6), also Fortschritt in Prozent berechnen
+        const totalPhases = 6; // 0-based zählung, daher 6 anstatt 7
+        const progressPercent = Math.round((currentPhase / totalPhases) * 100);
+        
+        // Fortschritt aktualisieren
+        progressBar.style.width = progressPercent + "%";
+        progressBar.setAttribute("aria-valuenow", progressPercent);
+        progressBar.textContent = progressPercent + "%";
+        
+        // Fortschrittscontainer anzeigen, außer in der Einführungsphase
+        if (currentPhase > 0) {
+            progressContainer.classList.remove("d-none");
+        } else {
+            progressContainer.classList.add("d-none");
+        }
+    }
+    
+    // Funktion für den Phasenwechsel
+    function proceedToNextPhase() {
+        // Aktuelle Phase basierend auf currentPhase
         switch (currentPhase) {
-            case 1: // Vorab-Fragen anzeigen
+            case 0: // Einweisung -> Vorab-Fragen
                 content.classList.add("d-none");
                 formular.classList.add("d-none");
                 demographicsContainer.classList.remove("d-none");
                 cancelButtonContainer.classList.remove("d-none");
+                currentPhase = 1;
                 break;
                 
-            case 2: // Text 1 anzeigen
+            case 1: // Vorab-Fragen -> Text 1
                 demographicsContainer.classList.add("d-none");
                 readingContainer.classList.remove("d-none");
                 
@@ -346,7 +375,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 startTimer();
                 break;
                 
-            case 3: // Fragen zu Text 1 anzeigen
+            case 2: // Text 1 -> Fragen zu Text 1
                 readingContainer.classList.add("d-none");
                 questionsContainer.classList.remove("d-none");
                 
@@ -362,7 +391,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 createContentQuestions(1);
                 break;
                 
-            case 4: // Text 2 anzeigen
+            case 3: // Fragen zu Text 1 -> Text 2
                 questionsContainer.classList.add("d-none");
                 readingContainer.classList.remove("d-none");
                 
@@ -377,7 +406,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 startTimer();
                 break;
                 
-            case 5: // Fragen zu Text 2 anzeigen
+            case 4: // Text 2 -> Fragen zu Text 2
                 readingContainer.classList.add("d-none");
                 questionsContainer.classList.remove("d-none");
                 
@@ -393,10 +422,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 createContentQuestions(2);
                 break;
                 
-            case 6: // Abschluss - Danke-Meldung anzeigen
+            case 5: // Fragen zu Text 2 -> Abschluss
                 showThankYouMessage();
                 break;
         }
+        
+        // Fortschrittsbalken aktualisieren
+        updateProgressBar();
     }
     
     // Überprüfen, ob der Benutzer bereits teilgenommen hat
@@ -461,16 +493,15 @@ document.addEventListener("DOMContentLoaded", function() {
         submitButton.addEventListener("click", function(event) {
             event.preventDefault();
             
-            // Überprüfen, ob die Checkbox angekreuzt ist
+            // Datenschutz-Checkbox überprüfen
             const checkbox = document.getElementById("flexCheckDefault");
             if (!checkbox.checked) {
-                alert("Bitte akzeptieren Sie die Datenschutzerklärung, bevor Sie fortfahren.");
+                // Validierungsfeedback anzeigen
+                checkbox.classList.add("is-invalid");
                 return;
             }
             
-            // Abbrechen-Button einblenden
-            cancelButtonContainer.classList.remove("d-none");
-            
+            // Wenn die Checkbox angekreuzt ist, zur nächsten Phase wechseln
             proceedToNextPhase();
         });
     }
@@ -484,7 +515,8 @@ document.addEventListener("DOMContentLoaded", function() {
             const formData = new FormData(demographicsForm);
             userData.demographics = {
                 age: formData.get("age"),
-                gender: formData.get("gender")
+                gender: formData.get("gender"),
+                hasDyslexia: formData.get("dyslexia")
             };
             
             proceedToNextPhase();
@@ -499,7 +531,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Formulardaten sammeln
             const formData = new FormData(questionsForm);
             
-            if (currentPhase === 3) { // Fragen zu Text 1
+            if (currentPhase === 2) { // Fragen zu Text 1
                 userData.text1.questions = {
                     readability: formData.get("readability"),
                     effort: formData.get("effort"),
@@ -511,7 +543,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Formular zurücksetzen
                 questionsForm.reset();
                 
-            } else if (currentPhase === 5) { // Fragen zu Text 2
+            } else if (currentPhase === 4) { // Fragen zu Text 2
                 userData.text2.questions = {
                     readability: formData.get("readability"),
                     effort: formData.get("effort"),

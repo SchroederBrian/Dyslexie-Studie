@@ -4,124 +4,492 @@ body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     color: #333;
-    background-color: #f8f9fa;
+    background-color: #f0f5ff; /* Helleren, angenehmeren Hintergrund einführen */
     padding-bottom: 5rem;
+    margin: 0; /* Entfernt Margin, damit Header und Footer die volle Breite nutzen können */
 }
 
-/* Header-Styling */
-.header {
-    margin-bottom: 2rem;
+/* Fixierter Header */
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 0.8rem 0;
+}
+
+.fixed-header .container-fluid {
+    padding: 0 1.5rem;
+}
+
+.fixed-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.2rem;
+}
+
+.fixed-header .lead {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+/* Barrierefreiheits-Steuerelemente im Header */
+.accessibility-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+    .accessibility-controls {
+        justify-content: flex-end;
+    }
+}
+
+/* Abstand für den Content, damit er nicht hinter dem Header verschwindet */
+.main-content-padding {
+    padding-top: 8rem;
+    padding-bottom: 7rem; /* Abstand für den fixierten Footer */
 }
 
 /* Container-Styling */
 .container {
     margin-bottom: 2rem;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.container:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 /* Text-Styling */
 h1, h2, h3, h4, h5, h6 {
-    color: #0d6efd;
+    color: #2c5282; /* Dunkleres Blau für besseren Kontrast */
     margin-bottom: 1rem;
+    font-weight: 600; /* Etwas fetter für bessere Lesbarkeit */
+}
+
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #1a365d;
+    border-bottom: 2px solid #4299e1;
+    padding-bottom: 0.5rem;
 }
 
 p {
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
+    font-size: 1.05rem; /* Größere Schrift für bessere Lesbarkeit */
+    line-height: 1.8;
+}
+
+/* Skip-Link für Barrierefreiheit */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #2c5282;
+    color: white;
+    padding: 8px;
+    z-index: 100;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Barrierefreiheits-Steuerelemente */
+.accessibility-button {
+    display: flex;
+    align-items: center;
+    margin: 0.2rem;
+    padding: 0.4rem 0.8rem;
+    background-color: #e2e8f0;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+}
+
+.accessibility-button i {
+    margin-right: 0.5rem;
+}
+
+.accessibility-button:hover {
+    background-color: #cbd5e0;
+    transform: translateY(-2px);
+}
+
+.accessibility-button.active {
+    background-color: #4299e1;
+    color: white;
+}
+
+/* Benachrichtigungs-Styling */
+.accessibility-notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2c5282;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-weight: 600;
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+.accessibility-notification.fade-out {
+    opacity: 0;
 }
 
 /* Formular-Styling */
 .form-check {
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    transition: background-color 0.2s;
+    border-radius: 0.5rem;
+}
+
+.form-check:hover {
+    background-color: #ebf8ff;
 }
 
 .form-label {
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #2c5282;
+}
+
+.form-check-input {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-top: 0.25rem;
+}
+
+.form-check-label {
+    padding-left: 0.5rem;
+    font-size: 1.05rem;
+}
+
+.form-control {
+    border: 2px solid #cbd5e0;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
+}
+
+select.form-select {
+    height: auto;
+    padding: 0.6rem;
+    border: 2px solid #cbd5e0;
+    border-radius: 0.5rem;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-size: 12px 12px;
+    font-size: 1.05rem;
+}
+
+select.form-select:focus {
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
 }
 
 /* Timer-Styling */
 .timer-display {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: bold;
-    color: #0d6efd;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    background-color: rgba(13, 110, 253, 0.1);
+    color: white;
+    padding: 0.7rem 1.2rem;
+    border-radius: 0.5rem;
+    background-color: #2c5282;
     display: inline-block;
+    box-shadow: 0 2px 6px rgba(44, 82, 130, 0.3);
+    margin-bottom: 1.5rem;
 }
 
 /* Button-Styling */
 .btn {
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background-color: #4299e1;
+    border-color: #4299e1;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #2b6cb0;
+    border-color: #2b6cb0;
+    box-shadow: 0 4px 8px rgba(44, 82, 130, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background-color: #e53e3e;
+    border-color: #e53e3e;
+}
+
+.btn-danger:hover, .btn-danger:focus {
+    background-color: #c53030;
+    border-color: #c53030;
+    box-shadow: 0 4px 8px rgba(229, 62, 62, 0.3);
+    transform: translateY(-2px);
 }
 
 .stop-button {
-    padding: 1rem 2rem;
-    font-size: 1.25rem;
+    padding: 1rem 2.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
     letter-spacing: 1px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(56, 161, 105, 0.3);
     transition: all 0.3s ease;
+    background-color: #38a169;
+    border-color: #38a169;
+    display: inline-block;
+    margin-top: 1rem;
 }
 
-.stop-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+.stop-button:hover, .stop-button:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(56, 161, 105, 0.4);
+    background-color: #2f855a;
+    border-color: #2f855a;
 }
 
 /* Fragen-Styling */
 .question-section {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+    padding: 1.8rem;
     background-color: #fff;
+    border-radius: 0.8rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.08);
+    border-left: 4px solid #4299e1;
+}
+
+.question-section h3, .question-section h4 {
+    color: #2c5282;
+    margin-bottom: 1.2rem;
+}
+
+.rating-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.rating-container .form-check-inline {
+    margin-right: 0;
+    padding: 0.5rem 0.8rem;
     border-radius: 0.5rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: background-color 0.2s;
+}
+
+.rating-container .form-check-inline:hover {
+    background-color: #ebf8ff;
+}
+
+/* Fortschrittsleiste */
+.progress {
+    height: 1.5rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: #e2e8f0;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #4299e1;
+    transition: width 0.6s ease;
+}
+
+/* Intro-Text-Container */
+.intro-text {
+    border-radius: 0.8rem;
+    background-color: #f8fafc;
+}
+
+/* Card-Styling */
+.card {
+    border-radius: 0.8rem;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Alert-Styling */
+.alert {
+    border-radius: 0.8rem;
+    border: none;
+    padding: 1rem 1.5rem;
+}
+
+.alert-info {
+    background-color: #ebf8ff;
+    color: #2c5282;
 }
 
 /* Footer-Styling */
-footer {
-    padding: 1.5rem 0;
-    margin-top: 3rem;
-    border-top: 1px solid #dee2e6;
+footer.fixed-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 0;
+    background-color: white;
+    border-top: 1px solid #cbd5e0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+}
+
+footer.fixed-footer .container-fluid {
+    padding: 0 1.5rem;
+}
+
+footer p {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 footer a {
-    margin: 0 1rem;
-    color: #6c757d;
+    margin: 0 1.2rem;
+    color: #4299e1;
     text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.5rem;
+    display: inline-block;
 }
 
 footer a:hover {
-    color: #0d6efd;
-    text-decoration: underline;
+    color: #2b6cb0;
+    text-decoration: none;
+    background-color: #ebf8ff;
+    transform: translateY(-2px);
+}
+
+/* Spinner-Styling */
+.spinner-border {
+    color: #4299e1;
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Text-Platzhalter-Styling */
+.text-placeholder, .content-questions-placeholder {
+    padding: 3rem 1rem;
+    background-color: #f8fafc;
+    border-radius: 0.8rem;
 }
 
 /* Anpassungen für Text-Container */
 .text-content {
     background-color: #fff;
-    padding: 2rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    margin-bottom: 2rem;
-    line-height: 1.8;
+    padding: 2.5rem;
+    border-radius: 0.8rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.08);
+    margin-bottom: 2.5rem;
+    line-height: 1.9;
+    font-size: 1.1rem;
+    border-left: 4px solid #4299e1;
 }
 
 .text-content h1 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
-    color: #0d6efd;
+    color: #2c5282;
+    border-bottom: 2px solid #4299e1;
+    padding-bottom: 0.5rem;
 }
 
 .text-content h2, .text-content h3 {
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    color: #0d6efd;
+    margin-top: 1.8rem;
+    margin-bottom: 1.2rem;
+    color: #2c5282;
+}
+
+/* CSS für Schriftgrößen */
+.font-size-smaller {
+    font-size: 0.9em;
+}
+
+.font-size-larger {
+    font-size: 1.2em;
+}
+
+.font-size-largest {
+    font-size: 1.4em;
+}
+
+/* Media Queries für responsive Design */
+@media (max-width: 768px) {
+    .fixed-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .fixed-header .lead {
+        font-size: 0.9rem;
+    }
+    
+    .container-fluid {
+        padding: 0 1rem;
+    }
+    
+    .accessibility-button {
+        padding: 0.4rem 0.7rem;
+        font-size: 0.85rem;
+    }
 }
 
 /* Responsive Anpassungen */
 @media (max-width: 768px) {
     .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding: 1.5rem;
     }
     
     .text-content {
@@ -129,12 +497,56 @@ footer a:hover {
     }
     
     .stop-button {
-        padding: 0.75rem 1.5rem;
-        font-size: 1.1rem;
+        padding: 0.8rem 1.6rem;
+        font-size: 1.2rem;
+    }
+
+    body {
+        padding: 0 1rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+    
+    .form-check-inline {
+        margin-bottom: 0.5rem;
+    }
+    
+    .rating-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .rating-container .form-check-inline {
+        padding: 0.4rem;
     }
 }
 
-/* Anpassungen für die Schriftarten */
+/* Für sehr kleine Bildschirme: Nur Icons anzeigen */
+@media (max-width: 576px) {
+    .accessibility-button span {
+        display: none;
+    }
+    
+    .accessibility-button i {
+        margin-right: 0;
+    }
+    
+    .fixed-header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .fixed-header .lead {
+        font-size: 0.8rem;
+    }
+}
+
+/* Schriftarten für die Texte */
 .font-arial {
     font-family: Arial, sans-serif;
 }
@@ -159,104 +571,249 @@ footer a:hover {
     font-family: 'OpenDyslexic', sans-serif;
 }
 
+/* Angepasste Stile für OpenDyslexic */
+.font-opendyslexic {
+    letter-spacing: 0.05em;
+    word-spacing: 0.15em;
+    line-height: 2;
+}
+
 /* Danksagung-Styling */
 .thank-you-container {
     animation: fadeIn 1s;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .thank-you-container .alert-success {
-    padding: 2rem;
+    padding: 2.5rem;
+    border-radius: 0.8rem;
+    border: none;
+    background-color: #c6f6d5;
+    border-left: 4px solid #38a169;
 }
 
 .thank-you-container h2 {
     margin-bottom: 1.5rem;
+    color: #2f855a;
+}
+
+/* Besser hervorgehobene aktive Elemente */
+.form-check-input:checked {
+    background-color: #4299e1;
+    border-color: #4299e1;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
+    border-color: #4299e1;
+}
+
+/* Zusätzliche Hilfsmittel für Menschen mit Dyslexie */
+.dyslexia-friendly {
+    background-color: #fffaed;
+    color: #000;
+}
+
+.dyslexia-friendly .text-content, .dyslexia-friendly .question-section {
+    background-color: #fffdf5;
+    line-height: 2;
+    letter-spacing: 0.05em;
+    word-spacing: 0.15em;
+}
+
+.dyslexia-friendly p, .dyslexia-friendly li, .dyslexia-friendly label {
+    line-height: 2;
 }
 
 /* Markdown-Formatierung verbessern */
 .text-content {
-    margin-bottom: 2rem;
-    padding: 1rem;
+    margin-bottom: 2.5rem;
+    padding: 2rem;
     background-color: white;
-    border-radius: 0.25rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-radius: 0.8rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.08);
 }
 
 .text-content h1, .text-content h2, .text-content h3 {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    color: #0d6efd;
+    margin-top: 1.5rem;
+    margin-bottom: 1.2rem;
+    color: #2c5282;
 }
 
 .text-content blockquote {
-    padding-left: 1rem;
-    border-left: 0.25rem solid #0d6efd;
-    color: #6c757d;
+    padding: 1rem 1.5rem;
+    border-left: 0.3rem solid #4299e1;
+    color: #4a5568;
+    background-color: #ebf8ff;
+    border-radius: 0 0.5rem 0.5rem 0;
+    margin: 1.5rem 0;
 }
 
 .text-content code {
-    background-color: #f8f9fa;
+    background-color: #edf2f7;
     padding: 0.2rem 0.4rem;
-    border-radius: 0.25rem;
+    border-radius: 0.3rem;
+    font-family: 'Courier New', monospace;
 }
 
 .text-content pre {
-    background-color: #f8f9fa;
-    padding: 1rem;
-    border-radius: 0.25rem;
+    background-color: #2d3748;
+    color: #e2e8f0;
+    padding: 1.2rem;
+    border-radius: 0.5rem;
     overflow-x: auto;
+    margin: 1.5rem 0;
 }
 
 .text-content img {
     max-width: 100%;
     height: auto;
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .text-content ul, .text-content ol {
-    padding-left: 2rem;
+    padding-left: 2.5rem;
+    margin: 1.2rem 0;
 }
 
-/* Stil für den Stop-Button */
-.stop-button {
-    padding: 1rem 2rem;
-    font-size: 1.5rem;
+.text-content li {
+    margin-bottom: 0.8rem;
+}
+
+/* Barrierefreiheit-Verbesserungen */
+*:focus-visible {
+    outline: 3px solid #4299e1;
+    outline-offset: 2px;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Farbkontrastverbesserungen für Nutzer mit Sehbehinderungen */
+.high-contrast {
+    background-color: #000;
+    color: #fff;
+}
+
+.high-contrast .container, 
+.high-contrast .text-content, 
+.high-contrast .question-section, 
+.high-contrast .card,
+.high-contrast .intro-text, 
+.high-contrast .fixed-footer,
+.high-contrast .fixed-header,
+.high-contrast .bg-light, 
+.high-contrast #formular {
+    background-color: #222 !important;
+    color: #fff !important;
+    border-color: #fff;
+}
+
+.high-contrast a, 
+.high-contrast h1, 
+.high-contrast h2, 
+.high-contrast h3, 
+.high-contrast h4, 
+.high-contrast h5, 
+.high-contrast h6,
+.high-contrast .form-check-label,
+.high-contrast label,
+.high-contrast .lead {
+    color: #fff !important;
+}
+
+/* Hover-Effekt für Links im High-Contrast-Modus */
+.high-contrast a:hover {
+    color: #ffcc00 !important;
+    text-decoration: underline !important;
+    background-color: #444 !important;
+    transform: translateY(-2px);
+}
+
+.high-contrast .btn-primary {
+    background-color: #fff !important;
+    color: #000 !important;
+    border-color: #fff !important;
+}
+
+.high-contrast .form-check {
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+    padding: 0.7rem;
+    border: 1px solid transparent;
+}
+
+.high-contrast .form-check:hover {
+    background-color: #444 !important;
+    border-color: #666 !important;
+}
+
+.high-contrast .form-check-label {
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.high-contrast .form-check-label a {
+    text-decoration: underline !important;
+    color: #ffcc00 !important;
     font-weight: bold;
 }
 
-/* Timer-Anzeige */
-.timer-display {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #0d6efd;
-    margin-bottom: 1rem;
+.high-contrast .form-check-label a:hover {
+    color: #ffee99 !important;
+    background-color: #555 !important;
 }
 
-/* Abstand für Footer */
-body {
-    padding-bottom: 5rem;
+.high-contrast .form-check-input {
+    background-color: #333 !important;
+    border-color: #fff !important;
+    border-width: 2px !important;
+    box-shadow: none !important;
 }
 
-/* Schriftarten für die Texte */
-.font-arial {
-    font-family: Arial, sans-serif;
+.high-contrast .form-check-input:checked {
+    background-color: #ffcc00 !important;
+    border-color: #fff !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e") !important;
 }
 
-.font-times {
-    font-family: 'Times New Roman', Times, serif;
+.high-contrast .form-check-input:focus {
+    border-color: #ffcc00 !important;
+    box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.5) !important;
 }
 
-.font-courier {
-    font-family: 'Courier New', Courier, monospace;
+.high-contrast .form-control, 
+.high-contrast .form-select {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-color: #666 !important;
 }
 
-.font-comic {
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+.high-contrast .progress {
+    background-color: #333 !important;
 }
 
-.font-georgia {
-    font-family: Georgia, serif;
+.high-contrast .alert-info {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-left: 4px solid #4299e1 !important;
+}
+
+.high-contrast .invalid-feedback {
+    color: #f56565 !important;
 }
