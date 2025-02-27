@@ -2,16 +2,16 @@
 
 ---
 
-> Tabelle XYZ
+> User
 
-| Spalte 1 | Spalte 2 | Spalte 3 |
-|----------|----------|----------|
-| Zeile 1  | Zeile 1  | Zeile 1  |
+| UserID | hasDyslexia | age | Reading1FK | Reading2FK | [Langzeitfragen] ... | 
+|----------|----------|----------|----------|----------|----------|
+| String  | bool  | byte  | string |string | byte ... |
 
 ---
 
-> Tabelle XYZ
+> Reading
 
-| Spalte 1 | Spalte 2 | Spalte 3 |
-|----------|----------|----------|
-| Zeile 1  | Zeile 1  | Zeile 1  |
+| ReadingID | Text | font | ReadingTime | [Fragen] ... |
+|----------|----------|----------|---------- |----------|
+| Zeile 1  | byte  | byte  | int | byte ... |
