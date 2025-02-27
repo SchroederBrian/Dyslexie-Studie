@@ -214,17 +214,201 @@ document.addEventListener("DOMContentLoaded", function() {
         const thankYouContainer = document.createElement("div");
         thankYouContainer.classList.add("container", "mt-4", "bg-light", "p-4", "rounded", "shadow-sm", "thank-you-container");
         
-        // Dankesmeldung hinzufügen
+        // Formatiere Leseerfahrung
+        function formatReadingExperience(experience) {
+            if (!experience || Object.keys(experience).length === 0) return "Keine Daten";
+            
+            return `
+                <div class="mb-2">
+                    <strong>Lesbarkeit:</strong> ${experience.readability || 'Keine Angabe'}/5
+                </div>
+                <div class="mb-2">
+                    <strong>Aufwand:</strong> ${experience.effort || 'Keine Angabe'}/5
+                </div>
+                <div class="mb-2">
+                    <strong>Schriftart-Bewertung:</strong> ${experience.fontLiking || 'Keine Angabe'}/5
+                </div>
+                <div class="mb-2">
+                    <strong>Kommentare:</strong> ${experience.comments || 'Keine Kommentare'}
+                </div>
+            `;
+        }
+        
+        // Formatiere Inhaltsfragen
+        function formatContentQuestions(questions) {
+            if (!questions || Object.keys(questions).length === 0) return "Keine Daten";
+            
+            let result = `<div class="mb-2"><strong>Korrekte Antworten:</strong> ${questions.correct || 0}/${questions.total || 0}</div>`;
+            
+            if (questions.answers && Object.keys(questions.answers).length > 0) {
+                result += `<div class="accordion mt-3" id="questionsAccordion">`;
+                
+                let i = 0;
+                for (const key in questions.answers) {
+                    const answer = questions.answers[key];
+                    const isCorrect = answer.isCorrect ? 'success' : 'danger';
+                    const correctIcon = answer.isCorrect ? 'check' : 'times';
+                    
+                    result += `
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading${i}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                       data-bs-target="#collapse${i}" aria-expanded="false" aria-controls="collapse${i}">
+                                    Frage ${i+1}: <span class="ms-2 text-${isCorrect}">
+                                        <i class="fas fa-${correctIcon} me-1"></i>
+                                        ${answer.isCorrect ? 'Richtig' : 'Falsch'}
+                                    </span>
+                                </button>
+                            </h2>
+                            <div id="collapse${i}" class="accordion-collapse collapse" 
+                                 aria-labelledby="heading${i}" data-bs-parent="#questionsAccordion">
+                                <div class="accordion-body">
+                                    <p><strong>Frage:</strong> ${answer.question}</p>
+                                    <p><strong>Ihre Antwort:</strong> ${answer.givenAnswer || 'Keine Antwort'}</p>
+                                    <p><strong>Richtige Antwort:</strong> ${answer.correctAnswer}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    i++;
+                }
+                
+                result += `</div>`;
+            }
+            
+            return result;
+        }
+        
+        // Geschlecht formatieren
+        function formatGender(gender) {
+            if (!gender) return 'Keine Angabe';
+            switch(gender) {
+                case 'male': return 'Männlich';
+                case 'female': return 'Weiblich';
+                case 'diverse': return 'Divers';
+                default: return gender;
+            }
+        }
+        
+        // Dyslexie formatieren
+        function formatDyslexia(hasDyslexia) {
+            if (!hasDyslexia) return 'Keine Angabe';
+            switch(hasDyslexia) {
+                case 'yes': return 'Ja';
+                case 'no': return 'Nein';
+                case 'unsure': return 'Unsicher';
+                default: return hasDyslexia;
+            }
+        }
+        
+        // Dankesmeldung und Datenzusammenfassung hinzufügen
         thankYouContainer.innerHTML = `
             <div class="row">
                 <div class="col-12 text-center">
                     <div class="alert alert-success">
                         <h2>Vielen Dank für Ihre Teilnahme!</h2>
                         <p>Ihre Antworten wurden erfolgreich gespeichert.</p>
-                        <p>Lesezeiten: 
-                           Text 1 (${userData.text1.font}): ${readingTimes[0]} Sekunden, 
-                           Text 2 (${userData.text2.font}): ${readingTimes[1]} Sekunden
-                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0">Ihre Daten im Überblick</h3>
+                        </div>
+                        <div class="card-body">
+                            <!-- Demographische Daten -->
+                            <div class="mb-4">
+                                <h4>Demographische Angaben</h4>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong>Alter:</strong> ${userData.demographics.age || 'Keine Angabe'}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong>Geschlecht:</strong> ${formatGender(userData.demographics.gender)}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong>Legasthenie:</strong> ${formatDyslexia(userData.demographics.hasDyslexia)}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Text 1 Daten -->
+                            <div class="mb-4">
+                                <h4>Text 1</h4>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong>Schriftart:</strong> ${userData.text1.font || 'Keine Angabe'}
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Lesezeit:</strong> ${readingTimes[0] || 0} Sekunden
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card mb-3">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Leseerfahrung</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                ${formatReadingExperience(userData.text1.readingExperience)}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Inhaltsfragen</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                ${formatContentQuestions(userData.text1.contentQuestions)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Text 2 Daten -->
+                            <div class="mb-4">
+                                <h4>Text 2</h4>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong>Schriftart:</strong> ${userData.text2.font || 'Keine Angabe'}
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Lesezeit:</strong> ${readingTimes[1] || 0} Sekunden
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card mb-3">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Leseerfahrung</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                ${formatReadingExperience(userData.text2.readingExperience)}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Inhaltsfragen</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                ${formatContentQuestions(userData.text2.contentQuestions)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
