@@ -855,7 +855,7 @@ footer a:hover {
 }
 
 .high-contrast .invalid-feedback {
-    color: #f56565 !important;
+    color: #ff6b6b !important;
 }
 
 /* Neue Hover-Regel für .col-12 .form-check.mb-3.ai-style-change-1 */
@@ -1034,4 +1034,79 @@ textarea.form-control.is-valid,
 .question-section:has(#content-questions:empty),
 .question-section:has(#content-questions > .content-questions-placeholder:only-child) {
     display: none !important;
+}
+
+/* Akkordeon-Styles für High-Contrast-Modus */
+.high-contrast .accordion-item {
+    background-color: #222 !important;
+    border-color: #666 !important;
+}
+
+.high-contrast .accordion-button {
+    background-color: #333 !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+
+.high-contrast .accordion-button:not(.collapsed) {
+    background-color: #444 !important;
+    color: #fff !important;
+}
+
+.high-contrast .accordion-button::after {
+    filter: invert(1);
+}
+
+.high-contrast .accordion-button:focus {
+    border-color: #fff !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25) !important;
+}
+
+.high-contrast .accordion-body {
+    background-color: #222 !important;
+    color: #fff !important;
+}
+
+/* Anpassung der roten Fehleranzeige im High-Contrast-Modus */
+.high-contrast .text-danger {
+    color: #ff6b6b !important;
+}
+
+.high-contrast .fa-times {
+    color: #ff6b6b !important;
+}
+
+/* Anpassung für die richtigen/falschen Antworten im High-Contrast-Modus */
+.high-contrast .text-success {
+    color: #6bff6b !important;
+}
+
+.high-contrast .fa-check {
+    color: #6bff6b !important;
+}
+
+/* Stärkere Hervorhebung von wichtigen Elementen */
+.high-contrast strong {
+    color: #fff !important;
+    font-weight: bold !important;
+}
+
+/* Akkordeon-Button-Hover-Effekt */
+.high-contrast .accordion-button:hover {
+    background-color: #444 !important;
+}
+
+.high-contrast label[for="comments"] span,
+.high-contrast label[for="comments"] small {
+    color: #aaa !important;
+    font-weight: normal;
+}
+
+/* Korrektur für "Ihre Daten im Überblick" im hellen Modus */
+.card-header.bg-primary {
+    color: #fff !important;
+}
+
+.card-header.bg-primary h3 {
+    color: #fff !important;
 }

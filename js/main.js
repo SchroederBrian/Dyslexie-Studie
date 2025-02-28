@@ -71,42 +71,69 @@ document.addEventListener("DOMContentLoaded", function() {
     const contentQuestionsForText = {
         1: [
             {
-                question: "Wie heißt der Protagonist der Geschichte?",
-                type: "radio",
-                options: ["Thomas", "Michael", "Johannes", "Peter"],
-                correctAnswer: "Johannes"
+                "question": "Wie heißt der Protagonist der Geschichte?",
+                "type": "radio",
+                "options": ["Thomas", "Michael", "Jonas", "Peter"],
+                "correctAnswer": "Jonas"
             },
             {
-                question: "Was entdeckt der Protagonist im Leuchtturm?",
-                type: "radio",
-                options: ["Eine Schatzkarte", "Ein altes Tagebuch", "Eine versteckte Tür", "Ein Gemälde"],
-                correctAnswer: "Eine versteckte Tür"
+                "question": "Was entdeckt Jonas im Leuchtturm?",
+                "type": "radio",
+                "options": ["Eine Schatzkarte", "Ein altes Tagebuch", "Eine versteckte Tür", "Einen alten Mann"],
+                "correctAnswer": "Einen alten Mann"
             },
             {
-                question: "In welcher Jahreszeit spielt die Geschichte?",
-                type: "radio",
-                options: ["Frühling", "Sommer", "Herbst", "Winter"],
-                correctAnswer: "Herbst"
+                "question": "Warum meiden die Dorfbewohner den Leuchtturm?",
+                "type": "radio",
+                "options": [
+                    "Sie glauben, dass dort Geister leben.",
+                    "Der Leuchtturm ist einsturzgefährdet.",
+                    "Es gibt gefährliche Strömungen in der Nähe.",
+                    "Der alte Mann hat sie verjagt."
+                ],
+                "correctAnswer": "Sie glauben, dass dort Geister leben."
+            },
+            {
+                "question": "Welche Aufgabe übernimmt Jonas am Ende der Geschichte?",
+                "type": "radio",
+                "options": [
+                    "Er bewacht den Leuchtturm.",
+                    "Er hilft dem alten Mann, das Licht zu bewahren.",
+                    "Er verlässt das Dorf.",
+                    "Er entdeckt einen Schatz."
+                ],
+                "correctAnswer": "Er hilft dem alten Mann, das Licht zu bewahren."
             }
         ],
         2: [
             {
-                question: "Welches Tier spielt eine wichtige Rolle in der Geschichte?",
-                type: "radio",
-                options: ["Hund", "Katze", "Vogel", "Fuchs"],
-                correctAnswer: "Katze"
+                "question": "Wie heißt die Protagonistin der Geschichte?",
+                "type": "radio",
+                "options": ["Marie", "Luna", "Gerda", "Fuchsbach"],
+                "correctAnswer": "Marie"
             },
             {
-                question: "Wo findet die Haupthandlung statt?",
-                type: "radio",
-                options: ["In einer Stadt", "In einem Dorf", "Auf einem Berg", "An einem See"],
-                correctAnswer: "In einem Dorf"
+                "question": "Was erbt die Protagonistin, als sie in das Dorf zieht?",
+                "type": "radio",
+                "options": ["Ein altes Fachwerkhaus", "Ein modernes Apartment", "Ein Café", "Eine Scheune"],
+                "correctAnswer": "Ein altes Fachwerkhaus"
             },
             {
-                question: "Was ist das zentrale Thema der Geschichte?",
-                type: "radio",
-                options: ["Freundschaft", "Verlust", "Abenteuer", "Familie"],
-                correctAnswer: "Freundschaft"
+                "question": "Wie heißt die Katze, die die Protagonistin an ihrem ersten Abend begegnet?",
+                "type": "radio",
+                "options": ["Mia", "Luna", "Bella", "Schatzi"],
+                "correctAnswer": "Luna"
+            },
+            {
+                "question": "Wie verändert sich das Leben der Protagonistin im Laufe der Geschichte?",
+                "type": "radio",
+                "options": [
+                    "Sie bleibt einsam und isoliert.",
+                    "Sie wird Teil der Dorfgemeinschaft.",
+                    "Sie kehrt in die Stadt zurück.",
+                    "Sie verkauft das geerbte Haus."
+                ],
+                "correctAnswer": "Sie wird Teil der Dorfgemeinschaft."
             }
         ]
     };
