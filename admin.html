@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin-Bereich | Dyslexie-Studie</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        
+        .login-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn-login:hover {
+            background-color: #45a049;
+        }
+        
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+        
+        .data-container {
+            display: none;
+        }
+        
+        .data-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .data-section {
+            margin-bottom: 30px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .data-table th {
+            background-color: #f2f2f2;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .btn-export {
+            padding: 8px 16px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .btn-export:hover {
+            background-color: #0b7dda;
+        }
+        
+        .tab-container {
+            margin-bottom: 20px;
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            background-color: #f1f1f1;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .tab-button.active {
+            background-color: #ddd;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 15px;
+            border: 1px solid #ddd;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login-Bereich -->
+    <div class="login-container" id="loginContainer">
+        <h2 class="login-title">Admin-Bereich</h2>
+        <div class="form-group">
+            <label for="password">Passwort:</label>
+            <input type="password" id="password" placeholder="Bitte geben Sie das Admin-Passwort ein">
+        </div>
+        <button class="btn-login" id="loginButton">Anmelden</button>
+        <p class="error-message" id="errorMessage">Falsches Passwort. Bitte versuchen Sie es erneut.</p>
+    </div>
+
+    <!-- Daten-Bereich (wird nach erfolgreicher Anmeldung angezeigt) -->
+    <div class="admin-container data-container" id="dataContainer">
+        <div class="data-header">
+            <h1>Dyslexie-Studie: Admin-Dashboard</h1>
+            <button class="btn-export" id="exportAllButton">Alle Daten exportieren (CSV)</button>
+        </div>
+
+        <div class="tab-container">
+            <button class="tab-button active" data-tab="teilnehmerTab">Teilnehmer</button>
+            <button class="tab-button" data-tab="leseerfahrungTab">Leseerfahrungen</button>
+            <button class="tab-button" data-tab="fragenTab">Inhaltsfragen</button>
+            <button class="tab-button" data-tab="auswertungTab">Auswertung</button>
+        </div>
+
+        <!-- Teilnehmer-Tabelle -->
+        <div class="tab-content active" id="teilnehmerTab">
+            <div class="data-section">
+                <h2>Teilnehmer</h2>
+                <div class="data-header">
+                    <p>Gesamtzahl der Teilnehmer: <span id="teilnehmerCount">0</span></p>
+                    <button class="btn-export" id="exportTeilnehmerButton">Teilnehmerdaten exportieren</button>
+                </div>
+                <table class="data-table" id="teilnehmerTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Alter</th>
+                            <th>Geschlecht</th>
+                            <th>Dyslexie</th>
+                            <th>Zeitpunkt</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Hier werden die Teilnehmerdaten dynamisch eingefügt -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Leseerfahrung-Tabelle -->
+        <div class="tab-content" id="leseerfahrungTab">
+            <div class="data-section">
+                <h2>Leseerfahrungen</h2>
+                <div class="data-header">
+                    <p>Gesamtzahl der Leseerfahrungen: <span id="leseerfahrungCount">0</span></p>
+                    <button class="btn-export" id="exportLeseerfahrungButton">Leseerfahrungsdaten exportieren</button>
+                </div>
+                <table class="data-table" id="leseerfahrungTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Teilnehmer-ID</th>
+                            <th>Text-Nr.</th>
+                            <th>Schriftart</th>
+                            <th>OpenDyslexic</th>
+                            <th>Lesezeit (s)</th>
+                            <th>Lesbarkeit (1-5)</th>
+                            <th>Aufwand (1-5)</th>
+                            <th>Schriftart-Bewertung (1-5)</th>
+                            <th>Kommentare</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Hier werden die Leseerfahrungsdaten dynamisch eingefügt -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Inhaltsfragen-Tabelle -->
+        <div class="tab-content" id="fragenTab">
+            <div class="data-section">
+                <h2>Inhaltsfragen</h2>
+                <div class="data-header">
+                    <p>Gesamtzahl der beantworteten Fragen: <span id="fragenCount">0</span></p>
+                    <button class="btn-export" id="exportFragenButton">Fragendaten exportieren</button>
+                </div>
+                <table class="data-table" id="fragenTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Leseerfahrung-ID</th>
+                            <th>Frage</th>
+                            <th>Gegebene Antwort</th>
+                            <th>Korrekte Antwort</th>
+                            <th>Korrekt</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Hier werden die Fragendaten dynamisch eingefügt -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Auswertungs-Bereich -->
+        <div class="tab-content" id="auswertungTab">
+            <div class="data-section">
+                <h2>Studienauswertung</h2>
+                <p>Hier werden verschiedene Auswertungen und Statistiken zur Studie angezeigt.</p>
+                
+                <div class="data-section">
+                    <h3>Allgemeine Statistiken</h3>
+                    <ul>
+                        <li>Durchschnittliche Lesezeit (OpenDyslexic): <span id="avgTimeOpenDyslexic">-</span> Sekunden</li>
+                        <li>Durchschnittliche Lesezeit (Standard): <span id="avgTimeStandard">-</span> Sekunden</li>
+                        <li>Durchschnittliche Lesbarkeit (OpenDyslexic): <span id="avgReadabilityOpenDyslexic">-</span>/5</li>
+                        <li>Durchschnittliche Lesbarkeit (Standard): <span id="avgReadabilityStandard">-</span>/5</li>
+                        <li>Prozentsatz korrekter Antworten (OpenDyslexic): <span id="correctPercentageOpenDyslexic">-</span>%</li>
+                        <li>Prozentsatz korrekter Antworten (Standard): <span id="correctPercentageStandard">-</span>%</li>
+                    </ul>
+                </div>
+                
+                <div class="data-section">
+                    <h3>Vergleich: Personen mit und ohne Dyslexie</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Metrik</th>
+                                <th>Mit Dyslexie (OpenDyslexic)</th>
+                                <th>Mit Dyslexie (Standard)</th>
+                                <th>Ohne Dyslexie (OpenDyslexic)</th>
+                                <th>Ohne Dyslexie (Standard)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Durchschnittliche Lesezeit (s)</td>
+                                <td id="dyslexicTimeOpenDyslexic">-</td>
+                                <td id="dyslexicTimeStandard">-</td>
+                                <td id="nonDyslexicTimeOpenDyslexic">-</td>
+                                <td id="nonDyslexicTimeStandard">-</td>
+                            </tr>
+                            <tr>
+                                <td>Durchschnittliche Lesbarkeit (1-5)</td>
+                                <td id="dyslexicReadabilityOpenDyslexic">-</td>
+                                <td id="dyslexicReadabilityStandard">-</td>
+                                <td id="nonDyslexicReadabilityOpenDyslexic">-</td>
+                                <td id="nonDyslexicReadabilityStandard">-</td>
+                            </tr>
+                            <tr>
+                                <td>Durchschnittlicher Aufwand (1-5)</td>
+                                <td id="dyslexicEffortOpenDyslexic">-</td>
+                                <td id="dyslexicEffortStandard">-</td>
+                                <td id="nonDyslexicEffortOpenDyslexic">-</td>
+                                <td id="nonDyslexicEffortStandard">-</td>
+                            </tr>
+                            <tr>
+                                <td>Prozentsatz korrekter Antworten</td>
+                                <td id="dyslexicCorrectOpenDyslexic">-</td>
+                                <td id="dyslexicCorrectStandard">-</td>
+                                <td id="nonDyslexicCorrectOpenDyslexic">-</td>
+                                <td id="nonDyslexicCorrectStandard">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginContainer = document.getElementById('loginContainer');
+            const dataContainer = document.getElementById('dataContainer');
+            const loginButton = document.getElementById('loginButton');
+            const passwordInput = document.getElementById('password');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Tab-Funktionalität
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Aktiven Tab-Button setzen
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Aktiven Tab-Inhalt anzeigen
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Login-Funktionalität
+            loginButton.addEventListener('click', function() {
+                const enteredPassword = passwordInput.value;
+                
+                if (enteredPassword === CONFIG.ADMIN_PASSWORD) {
+                    // Erfolgreiche Anmeldung
+                    loginContainer.style.display = 'none';
+                    dataContainer.style.display = 'block';
+                    loadData();
+                } else {
+                    // Fehlerhafte Anmeldung
+                    errorMessage.style.display = 'block';
+                    passwordInput.value = '';
+                }
+            });
+            
+            // Passwort-Eingabe bei Enter-Taste
+            passwordInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    loginButton.click();
+                }
+            });
+            
+            // Funktion zum Laden der Daten aus der Datenbank
+            function loadData() {
+                // Hier würde die eigentliche Implementierung zum Laden der Daten stehen
+                // Dies ist nur ein Platzhalter
+                console.log('Daten werden geladen...');
+                
+                // Beispiel für Dummy-Daten zum Testen der Anzeige
+                const dummyData = generateDummyData();
+                displayData(dummyData);
+            }
+            
+            // Funktion zum Anzeigen der Daten in den Tabellen
+            function displayData(data) {
+                // Teilnehmer-Tabelle füllen
+                const teilnehmerTable = document.getElementById('teilnehmerTable').getElementsByTagName('tbody')[0];
+                teilnehmerTable.innerHTML = '';
+                data.participants.forEach(participant => {
+                    const row = teilnehmerTable.insertRow();
+                    row.insertCell(0).textContent = participant.participantId;
+                    row.insertCell(1).textContent = participant.age;
+                    row.insertCell(2).textContent = participant.gender;
+                    row.insertCell(3).textContent = participant.hasDyslexia ? 'Ja' : 'Nein';
+                    row.insertCell(4).textContent = participant.timestamp;
+                });
+                document.getElementById('teilnehmerCount').textContent = data.participants.length;
+                
+                // Leseerfahrung-Tabelle füllen
+                const leseerfahrungTable = document.getElementById('leseerfahrungTable').getElementsByTagName('tbody')[0];
+                leseerfahrungTable.innerHTML = '';
+                data.readings.forEach(reading => {
+                    const row = leseerfahrungTable.insertRow();
+                    row.insertCell(0).textContent = reading.readingId;
+                    row.insertCell(1).textContent = reading.participantId;
+                    row.insertCell(2).textContent = reading.textNumber;
+                    row.insertCell(3).textContent = reading.fontName;
+                    row.insertCell(4).textContent = reading.isOpenDyslexic ? 'Ja' : 'Nein';
+                    row.insertCell(5).textContent = reading.readingTimeInSec;
+                    row.insertCell(6).textContent = reading.readability;
+                    row.insertCell(7).textContent = reading.effort;
+                    row.insertCell(8).textContent = reading.fontLiking;
+                    row.insertCell(9).textContent = reading.comments;
+                });
+                document.getElementById('leseerfahrungCount').textContent = data.readings.length;
+                
+                // Fragen-Tabelle füllen
+                const fragenTable = document.getElementById('fragenTable').getElementsByTagName('tbody')[0];
+                fragenTable.innerHTML = '';
+                data.questions.forEach(question => {
+                    const row = fragenTable.insertRow();
+                    row.insertCell(0).textContent = question.questionId;
+                    row.insertCell(1).textContent = question.readingId;
+                    row.insertCell(2).textContent = question.questionText;
+                    row.insertCell(3).textContent = question.givenAnswer;
+                    row.insertCell(4).textContent = question.correctAnswer;
+                    row.insertCell(5).textContent = question.isCorrect ? 'Ja' : 'Nein';
+                });
+                document.getElementById('fragenCount').textContent = data.questions.length;
+                
+                // Auswertungsdaten füllen (in einer echten Implementierung würden diese berechnet werden)
+                document.getElementById('avgTimeOpenDyslexic').textContent = '45.2';
+                document.getElementById('avgTimeStandard').textContent = '52.7';
+                document.getElementById('avgReadabilityOpenDyslexic').textContent = '3.8';
+                document.getElementById('avgReadabilityStandard').textContent = '3.2';
+                document.getElementById('correctPercentageOpenDyslexic').textContent = '78.5';
+                document.getElementById('correctPercentageStandard').textContent = '72.3';
+                
+                // Vergleichstabelle mit Dummy-Daten füllen
+                document.getElementById('dyslexicTimeOpenDyslexic').textContent = '48.3';
+                document.getElementById('dyslexicTimeStandard').textContent = '60.1';
+                document.getElementById('nonDyslexicTimeOpenDyslexic').textContent = '42.7';
+                document.getElementById('nonDyslexicTimeStandard').textContent = '45.4';
+                
+                document.getElementById('dyslexicReadabilityOpenDyslexic').textContent = '4.1';
+                document.getElementById('dyslexicReadabilityStandard').textContent = '2.9';
+                document.getElementById('nonDyslexicReadabilityOpenDyslexic').textContent = '3.5';
+                document.getElementById('nonDyslexicReadabilityStandard').textContent = '3.7';
+                
+                document.getElementById('dyslexicEffortOpenDyslexic').textContent = '2.2';
+                document.getElementById('dyslexicEffortStandard').textContent = '3.7';
+                document.getElementById('nonDyslexicEffortOpenDyslexic').textContent = '2.5';
+                document.getElementById('nonDyslexicEffortStandard').textContent = '2.3';
+                
+                document.getElementById('dyslexicCorrectOpenDyslexic').textContent = '82.1%';
+                document.getElementById('dyslexicCorrectStandard').textContent = '68.5%';
+                document.getElementById('nonDyslexicCorrectOpenDyslexic').textContent = '75.3%';
+                document.getElementById('nonDyslexicCorrectStandard').textContent = '76.8%';
+            }
+            
+            // Export-Buttons
+            document.getElementById('exportAllButton').addEventListener('click', function() {
+                alert('Export aller Daten würde hier starten');
+            });
+            
+            document.getElementById('exportTeilnehmerButton').addEventListener('click', function() {
+                alert('Export der Teilnehmerdaten würde hier starten');
+            });
+            
+            document.getElementById('exportLeseerfahrungButton').addEventListener('click', function() {
+                alert('Export der Leseerfahrungsdaten würde hier starten');
+            });
+            
+            document.getElementById('exportFragenButton').addEventListener('click', function() {
+                alert('Export der Fragendaten würde hier starten');
+            });
+            
+            // Dummy-Daten für Testzwecke generieren
+            function generateDummyData() {
+                const participants = [];
+                const readings = [];
+                const questions = [];
+                
+                // 10 Dummy-Teilnehmer erstellen
+                for (let i = 1; i <= 10; i++) {
+                    const participantId = 'p' + i.toString().padStart(3, '0');
+                    const hasDyslexia = i % 3 === 0; // Jeder dritte Teilnehmer hat Dyslexie
+                    
+                    participants.push({
+                        participantId: participantId,
+                        age: ['18-25', '26-35', '36-45', '46-55', '56+'][Math.floor(Math.random() * 5)],
+                        gender: ['männlich', 'weiblich', 'divers'][Math.floor(Math.random() * 3)],
+                        hasDyslexia: hasDyslexia,
+                        timestamp: new Date(Date.now() - Math.random() * 30 * 86400000).toLocaleString()
+                    });
+                    
+                    // Für jeden Teilnehmer 2 Leseerfahrungen erstellen
+                    for (let j = 1; j <= 2; j++) {
+                        const readingId = 'r' + (((i-1)*2) + j).toString().padStart(3, '0');
+                        const isOpenDyslexic = j === 1; // Erster Text mit OpenDyslexic, zweiter mit Standard
+                        
+                        readings.push({
+                            readingId: readingId,
+                            participantId: participantId,
+                            textNumber: j,
+                            fontName: isOpenDyslexic ? 'OpenDyslexic' : 'Arial',
+                            isOpenDyslexic: isOpenDyslexic,
+                            readingTimeInSec: Math.floor(30 + Math.random() * 40),
+                            readability: Math.floor(1 + Math.random() * 5),
+                            effort: Math.floor(1 + Math.random() * 5),
+                            fontLiking: Math.floor(1 + Math.random() * 5),
+                            comments: isOpenDyslexic ? 
+                                'Die Schrift ist ungewohnt, aber nach einiger Zeit besser lesbar.' : 
+                                'Die Schrift ist vertraut und angenehm zu lesen.'
+                        });
+                        
+                        // Für jede Leseerfahrung 4 Fragen erstellen
+                        for (let k = 1; k <= 4; k++) {
+                            const questionId = 'q' + (((((i-1)*2) + j - 1) * 4) + k).toString().padStart(3, '0');
+                            const isCorrect = Math.random() > 0.3; // 70% Wahrscheinlichkeit für korrekte Antwort
+                            
+                            questions.push({
+                                questionId: questionId,
+                                readingId: readingId,
+                                questionText: `Frage ${k} zum Text ${j}`,
+                                givenAnswer: isCorrect ? 'Richtige Antwort' : 'Falsche Antwort',
+                                correctAnswer: 'Richtige Antwort',
+                                isCorrect: isCorrect
+                            });
+                        }
+                    }
+                }
+                
+                return {
+                    participants: participants,
+                    readings: readings,
+                    questions: questions
+                };
+            }
+        });
+    </script>
+</body>
+</html> 
