@@ -133,9 +133,25 @@ p {
     transform: translateY(-2px);
 }
 
-.accessibility-button.active {
+.accessibility-button.active,
+#high-contrast-toggle.active,
+#dyslexia-friendly-toggle.active {
     background-color: #4299e1;
     color: white;
+}
+
+/* Spezifischere Stilregeln für die Barrierefreiheits-Buttons */
+#high-contrast-toggle[aria-pressed="true"],
+#dyslexia-friendly-toggle[aria-pressed="true"] {
+    background-color: #4299e1;
+    color: white;
+}
+
+/* Hover-Effekt für Buttons */
+#high-contrast-toggle:hover,
+#dyslexia-friendly-toggle:hover {
+    background-color: #cbd5e0;
+    transform: translateY(-2px);
 }
 
 /* Benachrichtigungs-Styling */

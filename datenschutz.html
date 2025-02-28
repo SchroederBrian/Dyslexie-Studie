@@ -7,88 +7,140 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- OpenDyslexic Font -->
+    <link href="https://cdn.jsdelivr.net/npm/font-opendyslexic@1.0.3/open-dyslexic.min.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Skip Link für Barrierefreiheit -->
+    <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
+
     <!-- Header -->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h1>Datenschutzerklärung</h1>
-                <p><a href="index.html">Zurück zur Startseite</a></p>
+    <header class="fixed-header">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1>Lesbarkeits-Studie</h1>
+                    <p class="lead">Einfluss von Schriftarten auf das Leseverständnis</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="accessibility-controls">
+                        <button id="high-contrast-toggle" class="accessibility-button" aria-pressed="false">
+                            <i class="fas fa-adjust"></i> <span>Kontrast</span>
+                        </button>
+                        <button id="dyslexia-friendly-toggle" class="accessibility-button" aria-pressed="false">
+                            <i class="fas fa-book-reader"></i> <span>Lesehilfe</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </header>
 
-    <!-- Datenschutzerklärung -->
-    <div class="container mt-4 bg-light p-4 rounded shadow-sm">
-        <div class="row">
-            <div class="col-12">
-                <h2>1. Allgemeine Informationen</h2>
-                <p>Diese Datenschutzerklärung informiert über die Art, den Umfang und den Zweck der Erhebung und Verwendung personenbezogener Daten durch den Verantwortlichen dieser Umfragewebsite.</p>
-                
-                <h2>2. Verantwortlicher</h2>
-                <p>Verantwortlich für die Datenerhebung und -verarbeitung im Sinne der Datenschutzgesetze ist:</p>
-                <p>
-                    Tjorve Großmann<br>
-                    Email: kontakt@example.com
-                </p>
-                
-                <h2>3. Erhobene Daten</h2>
-                <p>Im Rahmen dieser Umfrage werden folgende Daten erhoben:</p>
-                <ul>
-                    <li>Demografische Angaben (Alter, Geschlecht)</li>
-                    <li>Lesezeit für verschiedene Texte</li>
-                    <li>Antworten auf Fragen zur Leseempfindung und zum Textinhalt</li>
-                    <li>Kommentare (sofern Sie welche hinterlassen)</li>
-                </ul>
-                <p>Die erhobenen Daten werden ausschließlich in anonymisierter Form für wissenschaftliche Zwecke im Rahmen einer Studie zum Einfluss verschiedener Schriftarten auf die Lesezeit und den Lernprozess verwendet.</p>
-                
-                <h2>4. Cookies</h2>
-                <p>Diese Website verwendet Cookies, um zu speichern, ob Sie bereits an der Umfrage teilgenommen haben. Cookies sind kleine Textdateien, die auf Ihrem Endgerät gespeichert werden. Der Cookie enthält einen eindeutigen Identifikator, der es ermöglicht, Sie bei einem erneuten Besuch wiederzuerkennen. Der Cookie wird für 365 Tage gespeichert und enthält Ihre Antworten und Lesezeiten.</p>
-                <p>Sie können Ihre Browser-Einstellungen so anpassen, dass Cookies abgelehnt werden oder Sie über das Setzen von Cookies informiert werden. In diesem Fall kann die Funktionalität der Website eingeschränkt sein.</p>
-                
-                <h2>5. Dauer der Speicherung</h2>
-                <p>Die erhobenen Daten werden für die Dauer der Studie gespeichert und anschließend gelöscht, spätestens jedoch nach Abschluss des Studiums des Verantwortlichen.</p>
-                
-                <h2>6. Ihre Rechte</h2>
-                <p>Sie haben das Recht:</p>
-                <ul>
-                    <li>die Teilnahme an der Umfrage jederzeit abzubrechen</li>
-                    <li>Ihre Einwilligung zur Datenspeicherung durch Löschen des Cookies zurückzuziehen</li>
-                </ul>
-                <p>Da die Daten anonymisiert gespeichert werden, ist eine nachträgliche Löschung einzelner Datensätze nicht möglich, da diese nicht Ihrer Person zugeordnet werden können.</p>
-                
-                <h2>7. Datensicherheit</h2>
-                <p>Es werden geeignete technische und organisatorische Maßnahmen getroffen, um Ihre personenbezogenen Daten gegen zufällige oder vorsätzliche Manipulationen, Verlust, Zerstörung oder gegen den Zugriff unberechtigter Personen zu schützen.</p>
-                
-                <h2>8. Änderungen der Datenschutzerklärung</h2>
-                <p>Diese Datenschutzerklärung kann bei Bedarf angepasst werden. Die aktuelle Version ist auf dieser Seite verfügbar.</p>
-                
-                <h2>9. Kontakt</h2>
-                <p>Bei Fragen zum Datenschutz können Sie sich an den Verantwortlichen wenden:</p>
-                <p>
-                    Tjorve Großmann<br>
-                    Email: kontakt@example.com
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="mt-5 bg-light py-3">
-        <!-- Container -->
+    <!-- Main Content -->
+    <main id="main-content" class="main-content-padding">
         <div class="container">
             <div class="row">
-                <div class="col-12 text-center">
-                    <!-- Copyright -->
-                    <p>© 2025 Tjorve Großmann</p>
-                    <!-- Impressum -->
-                    <a href="impressum.html">Impressum</a>
-                    <!-- Datenschutz -->
-                    <a href="datenschutz.html">Datenschutz</a>
+                <div class="col-12">
+                    <h1>Datenschutzerklärung</h1>
+                    <p class="mb-4"><a href="index.html" class="btn btn-primary"><i class="fas fa-arrow-left me-2"></i>Zurück zur Startseite</a></p>
+                
+                    <div class="question-section">
+                        <h2><i class="fas fa-info-circle me-2"></i>1. Allgemeine Informationen</h2>
+                        <p>Diese Datenschutzerklärung informiert über die Art, den Umfang und den Zweck der Erhebung und Verwendung personenbezogener Daten durch den Verantwortlichen dieser Umfragewebsite.</p>
+                    </div>
+                    
+                    <div class="question-section">
+                        <h2><i class="fas fa-user-shield me-2"></i>2. Verantwortlicher</h2>
+                        <p>Verantwortlich für die Datenerhebung und -verarbeitung im Sinne der Datenschutzgesetze ist:</p>
+                        <p>
+                            Tjorve Großmann<br>
+                            Email: kontakt@example.com
+                        </p>
+                    </div>
+                    
+                    <div class="question-section">
+                        <h2><i class="fas fa-database me-2"></i>3. Erhobene Daten</h2>
+                        <p>Im Rahmen dieser Umfrage werden folgende Daten erhoben:</p>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><i class="fas fa-chart-bar me-2"></i>Demografische Angaben (Alter, Geschlecht)</li>
+                                    <li class="list-group-item"><i class="fas fa-clock me-2"></i>Lesezeit für verschiedene Texte</li>
+                                    <li class="list-group-item"><i class="fas fa-check-square me-2"></i>Antworten auf Fragen zur Leseempfindung und zum Textinhalt</li>
+                                    <li class="list-group-item"><i class="fas fa-comment me-2"></i>Kommentare (sofern Sie welche hinterlassen)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p>Die erhobenen Daten werden ausschließlich in anonymisierter Form für wissenschaftliche Zwecke im Rahmen einer Studie zum Einfluss verschiedener Schriftarten auf die Lesezeit und den Lernprozess verwendet.</p>
+                    </div>
+                    
+                    <div class="question-section">
+                        <h2><i class="fas fa-cookie-bite me-2"></i>4. Cookies</h2>
+                        <p>Diese Website verwendet Cookies, um zu speichern, ob Sie bereits an der Umfrage teilgenommen haben. Cookies sind kleine Textdateien, die auf Ihrem Endgerät gespeichert werden. Der Cookie enthält einen eindeutigen Identifikator, der es ermöglicht, Sie bei einem erneuten Besuch wiederzuerkennen. Der Cookie wird für 365 Tage gespeichert und enthält Ihre Antworten und Lesezeiten.</p>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>Sie können Ihre Browser-Einstellungen so anpassen, dass Cookies abgelehnt werden oder Sie über das Setzen von Cookies informiert werden. In diesem Fall kann die Funktionalität der Website eingeschränkt sein.
+                        </div>
+                    </div>
+                    
+                    <div class="question-section">
+                        <h2><i class="fas fa-hourglass-half me-2"></i>5. Dauer der Speicherung</h2>
+                        <p>Die erhobenen Daten werden für die Dauer der Studie gespeichert und anschließend gelöscht, spätestens jedoch nach Abschluss des Studiums des Verantwortlichen.</p>
+                    </div>
+                    
+                    <div class="question-section">
+                        <h2><i class="fas fa-gavel me-2"></i>6. Ihre Rechte</h2>
+                        <p>Sie haben das Recht:</p>
+                        <ul>
+                            <li>die Teilnahme an der Umfrage jederzeit abzubrechen</li>
+                            <li>Ihre Einwilligung zur Datenspeicherung durch Löschen des Cookies zurückzuziehen</li>
+                        </ul>
+                        <p>Da die Daten anonymisiert gespeichert werden, ist eine nachträgliche Löschung einzelner Datensätze nicht möglich, da diese nicht Ihrer Person zugeordnet werden können.</p>
+                    </div>
+                    
+                    <div class="question-section">
+                        <h2><i class="fas fa-lock me-2"></i>7. Datensicherheit</h2>
+                        <p>Es werden geeignete technische und organisatorische Maßnahmen getroffen, um Ihre personenbezogenen Daten gegen zufällige oder vorsätzliche Manipulationen, Verlust, Zerstörung oder gegen den Zugriff unberechtigter Personen zu schützen.</p>
+                    </div>
+                    
+                    <div class="question-section">
+                        <h2><i class="fas fa-edit me-2"></i>8. Änderungen der Datenschutzerklärung</h2>
+                        <p>Diese Datenschutzerklärung kann bei Bedarf angepasst werden. Die aktuelle Version ist auf dieser Seite verfügbar.</p>
+                    </div>
+                    
+                    <div class="question-section">
+                        <h2><i class="fas fa-phone me-2"></i>9. Kontakt</h2>
+                        <p>Bei Fragen zum Datenschutz können Sie sich an den Verantwortlichen wenden:</p>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="mb-0">
+                                    <strong>Tjorve Großmann</strong><br>
+                                    <i class="fas fa-envelope me-2"></i>Email: kontakt@example.com
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="fixed-footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <p class="text-center">© 2025 Tjorve Großmann</p>
+                    <div class="footer-links">
+                        <a href="impressum.html"><i class="fas fa-info-circle me-1"></i>Impressum</a>
+                        <a href="datenschutz.html"><i class="fas fa-shield-alt me-1"></i>Datenschutz</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,5 +148,8 @@
 
     <!-- Bootstrap Script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <!-- Accessibility Script -->
+    <script src="js/accessibility.js"></script>
 </body>
 </html>

@@ -2,10 +2,11 @@
 
 document.addEventListener("DOMContentLoaded", function() {
     // Buttons für Barrierefreiheit
-    const fontSizeIncreaseButton = document.querySelector('.font-size-increase');
-    const fontSizeDecreaseButton = document.querySelector('.font-size-decrease');
-    const contrastToggleButton = document.querySelector('.contrast-toggle');
-    const dyslexiaFriendlyButton = document.querySelector('.dyslexia-friendly-toggle');
+    const highContrastToggleButton = document.getElementById('high-contrast-toggle');
+    const dyslexiaFriendlyToggleButton = document.getElementById('dyslexia-friendly-toggle');
+    const fontSizeSmaller = document.getElementById('font-size-smaller');
+    const fontSizeReset = document.getElementById('font-size-reset');
+    const fontSizeLarger = document.getElementById('font-size-larger');
     
     // Standardwerte
     let currentFontSizeLevel = parseInt(localStorage.getItem('fontSizeLevel') || 0); // 0 = normal, 1 = größer, 2 = noch größer, -1 = kleiner
@@ -16,20 +17,32 @@ document.addEventListener("DOMContentLoaded", function() {
     initAccessibilitySettings();
     
     // Event-Listener für Buttons
-    if (fontSizeIncreaseButton) {
-        fontSizeIncreaseButton.addEventListener('click', increaseFontSize);
+    if (fontSizeLarger) {
+        fontSizeLarger.addEventListener('click', increaseFontSize);
     }
     
-    if (fontSizeDecreaseButton) {
-        fontSizeDecreaseButton.addEventListener('click', decreaseFontSize);
+    if (fontSizeSmaller) {
+        fontSizeSmaller.addEventListener('click', decreaseFontSize);
     }
     
-    if (contrastToggleButton) {
-        contrastToggleButton.addEventListener('click', toggleHighContrast);
+    if (fontSizeReset) {
+        fontSizeReset.addEventListener('click', resetFontSize);
     }
     
-    if (dyslexiaFriendlyButton) {
-        dyslexiaFriendlyButton.addEventListener('click', toggleDyslexiaFriendly);
+    if (highContrastToggleButton) {
+        highContrastToggleButton.addEventListener('click', toggleHighContrast);
+    }
+    
+    if (dyslexiaFriendlyToggleButton) {
+        dyslexiaFriendlyToggleButton.addEventListener('click', toggleDyslexiaFriendly);
+    }
+    
+    // Funktion zum Zurücksetzen der Schriftgröße
+    function resetFontSize() {
+        currentFontSizeLevel = 0;
+        applyFontSize();
+        saveFontSizePreference();
+        notifyUser("Schriftgröße zurückgesetzt");
     }
     
     // Funktion zum Initialisieren der Barrierefreiheits-Einstellungen
@@ -40,13 +53,19 @@ document.addEventListener("DOMContentLoaded", function() {
         // Kontrast anwenden
         if (highContrastEnabled) {
             document.body.classList.add('high-contrast');
-            if (contrastToggleButton) contrastToggleButton.classList.add('active');
+            if (highContrastToggleButton) {
+                highContrastToggleButton.classList.add('active');
+                highContrastToggleButton.setAttribute('aria-pressed', 'true');
+            }
         }
         
         // Dyslexie-Modus anwenden
         if (dyslexiaFriendlyEnabled) {
             document.body.classList.add('dyslexia-friendly');
-            if (dyslexiaFriendlyButton) dyslexiaFriendlyButton.classList.add('active');
+            if (dyslexiaFriendlyToggleButton) {
+                dyslexiaFriendlyToggleButton.classList.add('active');
+                dyslexiaFriendlyToggleButton.setAttribute('aria-pressed', 'true');
+            }
         }
     }
     
@@ -84,22 +103,26 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.classList.remove('font-size-smaller', 'font-size-larger', 'font-size-largest');
         
         // Aktive Schaltflächen-Klassen entfernen
-        if (fontSizeIncreaseButton) fontSizeIncreaseButton.classList.remove('active');
-        if (fontSizeDecreaseButton) fontSizeDecreaseButton.classList.remove('active');
+        if (fontSizeLarger) fontSizeLarger.classList.remove('active');
+        if (fontSizeSmaller) fontSizeSmaller.classList.remove('active');
+        if (fontSizeReset) fontSizeReset.classList.remove('active');
         
         // Neue Schriftgröße anwenden
         switch (currentFontSizeLevel) {
             case -1:
                 document.body.classList.add('font-size-smaller');
-                if (fontSizeDecreaseButton) fontSizeDecreaseButton.classList.add('active');
+                if (fontSizeSmaller) fontSizeSmaller.classList.add('active');
+                break;
+            case 0:
+                if (fontSizeReset) fontSizeReset.classList.add('active');
                 break;
             case 1:
                 document.body.classList.add('font-size-larger');
-                if (fontSizeIncreaseButton) fontSizeIncreaseButton.classList.add('active');
+                if (fontSizeLarger) fontSizeLarger.classList.add('active');
                 break;
             case 2:
                 document.body.classList.add('font-size-largest');
-                if (fontSizeIncreaseButton) fontSizeIncreaseButton.classList.add('active');
+                if (fontSizeLarger) fontSizeLarger.classList.add('active');
                 break;
         }
     }
@@ -115,11 +138,17 @@ document.addEventListener("DOMContentLoaded", function() {
         
         if (highContrastEnabled) {
             document.body.classList.add('high-contrast');
-            contrastToggleButton.classList.add('active');
+            if (highContrastToggleButton) {
+                highContrastToggleButton.classList.add('active');
+                highContrastToggleButton.setAttribute('aria-pressed', 'true');
+            }
             notifyUser("Hoher Kontrast aktiviert");
         } else {
             document.body.classList.remove('high-contrast');
-            contrastToggleButton.classList.remove('active');
+            if (highContrastToggleButton) {
+                highContrastToggleButton.classList.remove('active');
+                highContrastToggleButton.setAttribute('aria-pressed', 'false');
+            }
             notifyUser("Hoher Kontrast deaktiviert");
         }
         
@@ -133,11 +162,17 @@ document.addEventListener("DOMContentLoaded", function() {
         
         if (dyslexiaFriendlyEnabled) {
             document.body.classList.add('dyslexia-friendly');
-            dyslexiaFriendlyButton.classList.add('active');
+            if (dyslexiaFriendlyToggleButton) {
+                dyslexiaFriendlyToggleButton.classList.add('active');
+                dyslexiaFriendlyToggleButton.setAttribute('aria-pressed', 'true');
+            }
             notifyUser("Lesehilfe aktiviert");
         } else {
             document.body.classList.remove('dyslexia-friendly');
-            dyslexiaFriendlyButton.classList.remove('active');
+            if (dyslexiaFriendlyToggleButton) {
+                dyslexiaFriendlyToggleButton.classList.remove('active');
+                dyslexiaFriendlyToggleButton.setAttribute('aria-pressed', 'false');
+            }
             notifyUser("Lesehilfe deaktiviert");
         }
         
