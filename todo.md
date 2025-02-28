@@ -3,7 +3,7 @@
 ## Dringende Aufgaben
 - [ ] Datenbank
 - [ ] Backend PHP
-- [ ] imporessum anpassen
-- [ ] datenschutz anpassen
-- [ ] in datenschut anzeige welche daten erhoben werden
-- [ ] aktueller fehler: frage felder müssen nicht mehr ausgefüllt sein. fixen!
+- [ ] in datenschut text welche daten erhoben werden
+
+## In Progress
+- [X] aktueller fehler: frage felder müssen nicht mehr ausgefüllt sein. fixen!

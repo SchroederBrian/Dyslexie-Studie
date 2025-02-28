@@ -575,9 +575,10 @@ document.addEventListener("DOMContentLoaded", function() {
         questions.forEach((q, index) => {
             const answerKey = `q${textNumber}_${index}`;
             const givenAnswer = formData.get(answerKey);
+            
             results.answers[answerKey] = {
                 question: q.question,
-                givenAnswer: givenAnswer,
+                givenAnswer: givenAnswer || "Keine Antwort", // Explizite Behandlung von fehlenden Antworten
                 correctAnswer: q.correctAnswer,
                 isCorrect: givenAnswer === q.correctAnswer
             };
@@ -804,6 +805,12 @@ document.addEventListener("DOMContentLoaded", function() {
         demographicsForm.addEventListener("submit", function(event) {
             event.preventDefault();
             
+            if (!demographicsForm.checkValidity()) {
+                event.stopPropagation();
+                demographicsForm.classList.add('was-validated');
+                return;
+            }
+            
             // Formulardaten sammeln
             const formData = new FormData(demographicsForm);
             userData.demographics = {
@@ -824,30 +831,86 @@ document.addEventListener("DOMContentLoaded", function() {
             // Formulardaten sammeln
             const formData = new FormData(questionsForm);
             
-            // Je nach Phase unterschiedliche Daten speichern
-            if (currentPhase === 3) { // Fragen zum Inhalt für Text 1
-                userData.text1.contentQuestions = evaluateAnswers(1, formData);
-            } else if (currentPhase === 4) { // Fragen zur Leseempfindung für Text 1
-                userData.text1.readingExperience = {
-                    readability: formData.get("readability"),
-                    effort: formData.get("effort"),
-                    fontLiking: formData.get("fontLiking"),
-                    comments: formData.get("comments")
-                };
-            } else if (currentPhase === 6) { // Fragen zum Inhalt für Text 2
-                userData.text2.contentQuestions = evaluateAnswers(2, formData);
-            } else if (currentPhase === 7) { // Fragen zur Leseempfindung für Text 2
-                userData.text2.readingExperience = {
-                    readability: formData.get("readability"),
-                    effort: formData.get("effort"),
-                    fontLiking: formData.get("fontLiking"),
-                    comments: formData.get("comments")
-                };
+            // Prüfen, ob es sich um Inhaltsfragen handelt (Phase 3 und 6)
+            if (currentPhase === 3 || currentPhase === 6) {
+                // Sammeln der Antworten und überprüfen, ob alle beantwortet wurden
+                const textNumber = currentPhase === 3 ? 1 : 2;
+                const questions = contentQuestionsForText[textNumber];
+                let allQuestionsAnswered = true;
+                
+                // Überprüfen, ob alle Fragen beantwortet wurden
+                for (let i = 0; i < questions.length; i++) {
+                    const answerKey = `q${textNumber}_${i}`;
+                    if (!formData.has(answerKey) || !formData.get(answerKey)) {
+                        allQuestionsAnswered = false;
+                    }
+                }
+                
+                // Nur fortfahren, wenn alle Fragen beantwortet wurden
+                if (!allQuestionsAnswered) {
+                    questionsForm.classList.add('was-validated');
+                    return;
+                }
+                
+                // Speichern der Antworten
+                if (currentPhase === 3) {
+                    userData.text1.contentQuestions = evaluateAnswers(1, formData);
+                } else {
+                    userData.text2.contentQuestions = evaluateAnswers(2, formData);
+                }
+                
+                // Zur nächsten Phase weitergehen
+                questionsForm.reset();
+                proceedToNextPhase();
+                return;
+            }
+            
+            // Für Leseempfindungsfragen (Phase 4 und 7)
+            if (currentPhase === 4 || currentPhase === 7) {
+                // Überprüfen, ob die erforderlichen Felder ausgefüllt sind (Lesbarkeit, Aufwand, Schriftart-Bewertung)
+                let readability = formData.get("readability");
+                let effort = formData.get("effort");
+                let fontLiking = formData.get("fontLiking");
+                
+                // Bei Leseempfindungsfragen die Pflichtfelder prüfen
+                if (!readability || !effort || !fontLiking) {
+                    // Nur die Validierung für die erforderlichen Felder anzeigen
+                    questionsForm.classList.add('was-validated');
+                    return;
+                }
+                
+                // Daten sammeln und speichern
+                if (currentPhase === 4) {
+                    userData.text1.readingExperience = {
+                        readability: readability,
+                        effort: effort,
+                        fontLiking: fontLiking,
+                        comments: formData.get("comments") || "" // Kommentare sind optional
+                    };
+                } else {
+                    userData.text2.readingExperience = {
+                        readability: readability,
+                        effort: effort,
+                        fontLiking: fontLiking,
+                        comments: formData.get("comments") || "" // Kommentare sind optional
+                    };
+                }
+                
+                // Zur nächsten Phase weitergehen
+                questionsForm.reset();
+                proceedToNextPhase();
+                return;
+            }
+            
+            // Für andere Phasen (falls vorhanden) - nutzen der Standardvalidierung
+            if (!questionsForm.checkValidity()) {
+                event.stopPropagation();
+                questionsForm.classList.add('was-validated');
+                return;
             }
             
             // Formular zurücksetzen für die nächste Phase
             questionsForm.reset();
-            
             proceedToNextPhase();
         });
     }
