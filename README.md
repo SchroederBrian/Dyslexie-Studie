@@ -28,18 +28,17 @@ Die Anwendung sammelt strukturierte Daten gemäß dem unten beschriebenen Datenm
 
 >### Leseerfahrung-Tabelle
 
-| Feld             | Typ      | Beschreibung                                     |
-|------------------|----------|--------------------------------------------------|
-| readingId        | String   | Eindeutige ID für jede Leseerfahrung             |
-| participantId    | String   | Referenz auf den Teilnehmer (Fremdschlüssel)     |
-| textNumber       | Integer  | 1 oder 2 (für Text 1 oder Text 2)                |
-| fontName         | String   | Name der verwendeten Schriftart                  |
-| isOpenDyslexic   | Boolean  | Gibt an, ob OpenDyslexic verwendet wurde         |
-| readingTimeInSec | Integer  | Lesezeit in Sekunden                             |
-| readability      | Integer  | Bewertung der Lesbarkeit (1-5)                   |
-| effort           | Integer  | Bewertung des Leseaufwands (1-5)                 |
-| fontLiking       | Integer  | Bewertung der Schriftart (1-5)                   |
-| comments         | Text     | Offene Anmerkungen des Teilnehmers               |
+| Feld                   | Typ      | Beschreibung                                     |
+|------------------------|----------|--------------------------------------------------|
+| readingId              | String   | Eindeutige ID für jede Leseerfahrung             |
+| participantId          | String   | Referenz auf den Teilnehmer (Fremdschlüssel)     |
+| textNumber             | Integer  | 1 oder 2 (für Text 1 oder Text 2)                |
+| fontName               | String   | Name der verwendeten Schriftart                  |
+| readingTimeInSec       | Integer  | Lesezeit in Sekunden                             |
+| readability            | Integer  | Bewertung der Lesbarkeit (1-5)                   |
+| perceivedReadingSpeed  | Integer  | Bewertung des Leseaufwands (1-5)                 |
+| fontLiking             | Integer  | Bewertung der Schriftart (1-5)                   |
+| comments               | Text     | Offene Anmerkungen des Teilnehmers               |
 
 ---
 
@@ -49,10 +48,9 @@ Die Anwendung sammelt strukturierte Daten gemäß dem unten beschriebenen Datenm
 |------------------|----------|--------------------------------------------------|
 | questionId       | String   | Eindeutige ID für jede Antwort                   |
 | readingId        | String   | Referenz auf die Leseerfahrung (Fremdschlüssel)  |
-| questionText     | Text     | Fragetext                                        |
-| givenAnswer      | Text     | Vom Teilnehmer gegebene Antwort                  |
-| correctAnswer    | Text     | Korrekte Antwort                                 |
-| isCorrect        | Boolean  | Gibt an, ob die Antwort korrekt war              |
+| question         | Integer  | Ausgewählte Frage                                |
+| givenAnswer      | Integer  | Vom Teilnehmer gegebene Antwort                  |
+| correctAnswer    | Integer  | Korrekte Antwort                                 |
 
 ---
 
@@ -61,13 +59,13 @@ Die Anwendung sammelt strukturierte Daten gemäß dem unten beschriebenen Datenm
 2. **Erster Lesetest:** 
    - Zufällige Zuweisung einer Schriftart (eine davon OpenDyslexic)
    - Lesen von Text 1 mit Zeitmessung
-   - Bewertung der Leseerfahrung (Lesbarkeit, Aufwand, Schriftart)
+   - Bewertung der Leseerfahrung (Lesbarkeit, Empfundende Lesezeit, Schriftart)
    - Beantwortung von 4 Multiple-Choice Inhaltsfragen
    - Optional: Weitere Anmerkungen
 3. **Zweiter Lesetest:**
    - Automatische Zuweisung der anderen Schriftart
    - Lesen von Text 2 mit Zeitmessung  
-   - Bewertung der Leseerfahrung (Lesbarkeit, Aufwand, Schriftart)
+   - Bewertung der Leseerfahrung (Lesbarkeit, Empfundende Lesezeit, Schriftart)
    - Beantwortung von 4 Multiple-Choice Inhaltsfragen
    - Optional: Weitere Anmerkungen
 4. **Abschluss:** Speicherung aller Daten und Danksagung
