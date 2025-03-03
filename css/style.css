@@ -35,22 +35,6 @@ body {
     margin-bottom: 0;
 }
 
-/* Barrierefreiheits-Steuerelemente im Header */
-.accessibility-controls {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    margin-bottom: 0;
-}
-
-@media (min-width: 768px) {
-    .accessibility-controls {
-        justify-content: flex-end;
-    }
-}
-
 /* Abstand für den Content, damit er nicht hinter dem Header verschwindet */
 .main-content-padding {
     padding-top: 8rem;
@@ -107,72 +91,6 @@ p {
 
 .skip-link:focus {
     top: 0;
-}
-
-/* Barrierefreiheits-Steuerelemente */
-.accessibility-button {
-    display: flex;
-    align-items: center;
-    margin: 0.2rem;
-    padding: 0.4rem 0.8rem;
-    background-color: #e2e8f0;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    font-size: 0.85rem;
-}
-
-.accessibility-button i {
-    margin-right: 0.5rem;
-}
-
-.accessibility-button:hover {
-    background-color: #cbd5e0;
-    transform: translateY(-2px);
-}
-
-.accessibility-button.active,
-#high-contrast-toggle.active,
-#dyslexia-friendly-toggle.active {
-    background-color: #4299e1;
-    color: white;
-}
-
-/* Spezifischere Stilregeln für die Barrierefreiheits-Buttons */
-#high-contrast-toggle[aria-pressed="true"],
-#dyslexia-friendly-toggle[aria-pressed="true"] {
-    background-color: #4299e1;
-    color: white;
-}
-
-/* Hover-Effekt für Buttons */
-#high-contrast-toggle:hover,
-#dyslexia-friendly-toggle:hover {
-    background-color: #cbd5e0;
-    transform: translateY(-2px);
-}
-
-/* Benachrichtigungs-Styling */
-.accessibility-notification {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #2c5282;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    font-weight: 600;
-    opacity: 1;
-    transition: opacity 0.5s;
-}
-
-.accessibility-notification.fade-out {
-    opacity: 0;
 }
 
 /* Formular-Styling */
@@ -496,11 +414,6 @@ footer a:hover {
     .container-fluid {
         padding: 0 1rem;
     }
-    
-    .accessibility-button {
-        padding: 0.4rem 0.7rem;
-        font-size: 0.85rem;
-    }
 }
 
 /* Responsive Anpassungen */
@@ -546,14 +459,6 @@ footer a:hover {
 
 /* Für sehr kleine Bildschirme: Nur Icons anzeigen */
 @media (max-width: 576px) {
-    .accessibility-button span {
-        display: none;
-    }
-    
-    .accessibility-button i {
-        margin-right: 0;
-    }
-    
     .fixed-header h1 {
         font-size: 1.3rem;
     }
@@ -627,23 +532,6 @@ footer a:hover {
 .form-check-input:focus {
     box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
     border-color: #4299e1;
-}
-
-/* Zusätzliche Hilfsmittel für Menschen mit Dyslexie */
-.dyslexia-friendly {
-    background-color: #fffaed;
-    color: #000;
-}
-
-.dyslexia-friendly .text-content, .dyslexia-friendly .question-section {
-    background-color: #fffdf5;
-    line-height: 2;
-    letter-spacing: 0.05em;
-    word-spacing: 0.15em;
-}
-
-.dyslexia-friendly p, .dyslexia-friendly li, .dyslexia-friendly label {
-    line-height: 2;
 }
 
 /* Markdown-Formatierung verbessern */
@@ -721,143 +609,6 @@ footer a:hover {
     border-width: 0;
 }
 
-/* Farbkontrastverbesserungen für Nutzer mit Sehbehinderungen */
-.high-contrast {
-    background-color: #000;
-    color: #fff;
-}
-
-.high-contrast .container, 
-.high-contrast .text-content, 
-.high-contrast .question-section, 
-.high-contrast .card,
-.high-contrast .intro-text, 
-.high-contrast .fixed-footer,
-.high-contrast .fixed-header,
-.high-contrast .bg-light, 
-.high-contrast #formular {
-    background-color: #222 !important;
-    color: #fff !important;
-    border-color: #fff;
-}
-
-.high-contrast a, 
-.high-contrast h1, 
-.high-contrast h2, 
-.high-contrast h3, 
-.high-contrast h4, 
-.high-contrast h5, 
-.high-contrast h6,
-.high-contrast .form-check-label,
-.high-contrast label,
-.high-contrast .lead {
-    color: #fff !important;
-}
-
-/* Hover-Effekt für Links im High-Contrast-Modus */
-.high-contrast a:hover {
-    color: #ffcc00 !important;
-    text-decoration: underline !important;
-    background-color: #444 !important;
-    transform: translateY(-2px);
-}
-
-.high-contrast .btn-primary {
-    background-color: #fff !important;
-    color: #000 !important;
-    border-color: #fff !important;
-}
-
-.high-contrast .form-check {
-    border-radius: 0.5rem;
-    transition: background-color 0.2s;
-    padding: 0.7rem;
-    border: 1px solid transparent;
-}
-
-.high-contrast .form-check:hover {
-    background-color: #444 !important;
-    border-color: #666 !important;
-}
-
-.high-contrast .form-check-label {
-    color: #fff !important;
-    font-weight: 600;
-}
-
-.high-contrast .form-check-label a {
-    text-decoration: underline !important;
-    color: #ffcc00 !important;
-    font-weight: bold;
-}
-
-.high-contrast .form-check-label a:hover {
-    color: #ffee99 !important;
-    background-color: #555 !important;
-}
-
-.high-contrast .form-check-input {
-    background-color: #333 !important;
-    border-color: #fff !important;
-    border-width: 2px !important;
-    box-shadow: none !important;
-}
-
-.high-contrast .form-check-input:checked {
-    background-color: #ffcc00 !important;
-    border-color: #fff !important;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e") !important;
-}
-
-.high-contrast .form-check-input:focus {
-    border-color: #ffcc00 !important;
-    box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.5) !important;
-}
-
-.high-contrast .form-control, 
-.high-contrast .form-select {
-    background-color: #333 !important;
-    color: #fff !important;
-    border-color: #666 !important;
-}
-
-.high-contrast .progress {
-    background-color: #333 !important;
-}
-
-.high-contrast .alert-info {
-    background-color: #333 !important;
-    color: #fff !important;
-    border-left: 4px solid #4299e1 !important;
-}
-
-.high-contrast .alert-success {
-    background-color: #333 !important;
-    color: #fff !important;
-    border-left: 4px solid #ffcc00 !important;
-    border: 1px solid #ffcc00 !important;
-}
-
-.high-contrast .thank-you-container {
-    background-color: #222 !important;
-    color: #fff !important;
-    border: 1px solid #666 !important;
-}
-
-.high-contrast .thank-you-container .alert-success {
-    background-color: #222 !important;
-    color: #fff !important;
-    border: 1px solid #ffcc00 !important;
-}
-
-.high-contrast .thank-you-container h2 {
-    color: #ffcc00 !important;
-}
-
-.high-contrast .invalid-feedback {
-    color: #ff6b6b !important;
-}
-
 /* Neue Hover-Regel für .col-12 .form-check.mb-3.ai-style-change-1 */
 .col-12 .form-check.mb-3.ai-style-change-1:hover {
     background-color: #444 !important;
@@ -909,10 +660,6 @@ textarea:not(.was-submitted):invalid {
     color: #333 !important;
 }
 
-/* Für High-Contrast-Modus separat definieren */
-.high-contrast .form-check-label {
-    color: #fff !important;
-}
 
 /* Fehlermeldungen (invalid-feedback) weiterhin rot lassen */
 .invalid-feedback {
@@ -934,49 +681,6 @@ textarea.form-control.is-valid,
     border-color: #ced4da !important;
     background-image: none !important;
     box-shadow: none !important;
-}
-
-/* Anpassungen für das Kommentarfeld im High-Contrast-Modus (Dark Mode) */
-.high-contrast textarea.form-control,
-.high-contrast #comments {
-    background-color: #333 !important;
-    color: #fff !important;
-    border-color: #666 !important;
-}
-
-/* Placeholder-Text im Dark Mode anpassen */
-.high-contrast textarea.form-control::placeholder,
-.high-contrast #comments::placeholder {
-    color: #aaa !important;
-}
-
-/* Fokus-Zustand im Dark Mode */
-.high-contrast textarea.form-control:focus,
-.high-contrast #comments:focus {
-    border-color: #ffcc00 !important;
-    box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.25) !important;
-}
-
-/* Labels im Dark Mode anpassen */
-.high-contrast .form-label {
-    color: #fff !important;
-}
-
-/* Speziell das Label für das Kommentarfeld stylen */
-.high-contrast label[for="comments"] {
-    color: #fff !important;
-    font-weight: 600;
-}
-
-/* Optionale Anmerkung in Klammern anders hervorheben */
-.high-contrast label[for="comments"]:after {
-    content: " ";
-}
-
-.high-contrast label[for="comments"] span,
-.high-contrast label[for="comments"] small {
-    color: #aaa !important;
-    font-weight: normal;
 }
 
 /* Positionierung des Abbrechen-Button-Containers */
@@ -1006,19 +710,6 @@ textarea.form-control.is-valid,
     flex-direction: column;
 }
 
-/* Dark Mode Anpassungen für den Button */
-.high-contrast #cancel-button {
-    background-color: #991b1b !important;
-    border-color: #fff !important;
-    color: #fff !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.high-contrast #cancel-button:hover {
-    background-color: #b91c1c !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-}
-
 /* Verstecke leere Fragen-Sektion */
 .question-section:has(#content-questions.d-none) {
     display: none !important;
@@ -1036,72 +727,6 @@ textarea.form-control.is-valid,
     display: none !important;
 }
 
-/* Akkordeon-Styles für High-Contrast-Modus */
-.high-contrast .accordion-item {
-    background-color: #222 !important;
-    border-color: #666 !important;
-}
-
-.high-contrast .accordion-button {
-    background-color: #333 !important;
-    color: #fff !important;
-    box-shadow: none !important;
-}
-
-.high-contrast .accordion-button:not(.collapsed) {
-    background-color: #444 !important;
-    color: #fff !important;
-}
-
-.high-contrast .accordion-button::after {
-    filter: invert(1);
-}
-
-.high-contrast .accordion-button:focus {
-    border-color: #fff !important;
-    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25) !important;
-}
-
-.high-contrast .accordion-body {
-    background-color: #222 !important;
-    color: #fff !important;
-}
-
-/* Anpassung der roten Fehleranzeige im High-Contrast-Modus */
-.high-contrast .text-danger {
-    color: #ff6b6b !important;
-}
-
-.high-contrast .fa-times {
-    color: #ff6b6b !important;
-}
-
-/* Anpassung für die richtigen/falschen Antworten im High-Contrast-Modus */
-.high-contrast .text-success {
-    color: #6bff6b !important;
-}
-
-.high-contrast .fa-check {
-    color: #6bff6b !important;
-}
-
-/* Stärkere Hervorhebung von wichtigen Elementen */
-.high-contrast strong {
-    color: #fff !important;
-    font-weight: bold !important;
-}
-
-/* Akkordeon-Button-Hover-Effekt */
-.high-contrast .accordion-button:hover {
-    background-color: #444 !important;
-}
-
-.high-contrast label[for="comments"] span,
-.high-contrast label[for="comments"] small {
-    color: #aaa !important;
-    font-weight: normal;
-}
-
 /* Korrektur für "Ihre Daten im Überblick" im hellen Modus */
 .card-header.bg-primary {
     color: #fff !important;
@@ -1109,4 +734,48 @@ textarea.form-control.is-valid,
 
 .card-header.bg-primary h3 {
     color: #fff !important;
+}
+
+/* Bootstrap Modal Fixes */
+.modal {
+    z-index: 1050 !important; 
+}
+
+.modal.show {
+    display: block !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+
+.modal-dialog {
+    margin: 1.75rem auto;
+    max-width: 500px;
+    width: auto;
+    position: relative;
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 500px;
+        margin: 1.75rem auto;
+    }
+}
+
+.modal-content {
+    position: relative;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* Stelle sicher, dass alle Modals in Mobilen korrekt dargestellt werden */
+@media (max-width: 576px) {
+    .modal-dialog {
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem);
+    }
 }

@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const questionsTitle = document.getElementById("questions-title");
     const timerDisplay = document.getElementById("timer");
     const cancelButtonContainer = document.getElementById("cancel-button-container");
+    const confirmDeleteModal = document.getElementById("confirm-delete-modal");
     
     // Buttons und Formulare
     const submitButton = document.querySelector("#formular button[type='submit']");
@@ -17,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const questionsForm = document.getElementById("questions-form");
     const stopButton = document.getElementById("stop-button");
     const cancelButton = document.getElementById("cancel-button");
+    const confirmDeleteButton = document.getElementById("confirm-delete-button");
     
     // Variablen für den Ablauf
     // Neue Phasen:
@@ -31,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // 8 = Optionale Fragen zum ersten Text (falls implementiert)
     // 9 = Abschluss
     let currentPhase = 0;
-    let currentTextNumber = 1;
     let selectedFonts = [];
     let readingTimes = [];
     let userData = {
@@ -227,8 +228,7 @@ document.addEventListener("DOMContentLoaded", function() {
         readingContainer.classList.add("d-none");
         questionsContainer.classList.add("d-none");
         cancelButtonContainer.classList.add("d-none");
-        
-        // Fortschrittsanzeige ausblenden
+        confirmDeleteModal.classList.add("d-none");
         progressContainer.classList.add("d-none");
         
         // Falls es bereits eine Dankesmeldung gibt, diese entfernen
@@ -445,7 +445,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.insertBefore(thankYouContainer, document.querySelector("footer"));
         
         // Cookie setzen, dass der Nutzer teilgenommen hat
-        setCookie("umfrageAbgeschlossen", JSON.stringify(userData), 365);
+        setCookie("umfrageAbgeschlossen", JSON.stringify(userData), 30);
     }
     
     // Funktion zum Laden und Anzeigen des Textes
@@ -755,22 +755,84 @@ document.addEventListener("DOMContentLoaded", function() {
     readingContainer.classList.add("d-none");
     questionsContainer.classList.add("d-none");
     cancelButtonContainer.classList.add("d-none");
+    confirmDeleteModal.classList.add("d-none");
     
     // Event-Listener für den Abbrechen-Button
     if (cancelButton) {
         cancelButton.addEventListener("click", function() {
-            // Bestätigungsdialog anzeigen
-            if (confirm("Möchten Sie die Umfrage wirklich abbrechen? Alle bisher gespeicherten Daten werden gelöscht.")) {
-                // Cookie löschen
-                deleteCookie("umfrageAbgeschlossen");
-                
-                // Timer stoppen, falls er läuft
-                if (timerInterval) {
-                    stopTimer();
+            // Überprüfen, ob Bootstrap verfügbar ist
+            if (typeof bootstrap === 'undefined') {
+                console.error('Bootstrap ist nicht definiert. Das Modal kann nicht angezeigt werden.');
+                alert('Es gab ein Problem beim Öffnen des Dialogs. Bitte versuchen Sie es später erneut.');
+                return;
+            }
+            
+            // Stellen Sie sicher, dass das Modal sichtbar ist und die d-none-Klasse entfernt wurde
+            confirmDeleteModal.classList.remove('d-none');
+            
+            try {
+                // Bootstrap-Modal öffnen - zuerst vorherige Instanz entfernen falls vorhanden
+                let oldModal = bootstrap.Modal.getInstance(confirmDeleteModal);
+                if (oldModal) {
+                    oldModal.dispose();
                 }
                 
-                // Seite neu laden, um zur Startansicht zurückzukehren
-                window.location.reload();
+                // Neue Instanz erstellen und anzeigen
+                const modal = new bootstrap.Modal(confirmDeleteModal, {
+                    backdrop: true,
+                    keyboard: true,
+                    focus: true
+                });
+                modal.show();
+                
+                // Debug-Log
+                console.log('Modal sollte jetzt angezeigt werden', confirmDeleteModal);
+            } catch (error) {
+                console.error('Fehler beim Öffnen des Modals:', error);
+                
+                // Fallback-Methode, wenn Bootstrap-Modal nicht funktioniert
+                confirmDeleteModal.style.display = 'block';
+                confirmDeleteModal.style.opacity = '1';
+                document.body.classList.add('modal-open');
+                
+                // Manuelle Backdrop hinzufügen, wenn sie fehlt
+                if (!document.querySelector('.modal-backdrop')) {
+                    const backdrop = document.createElement('div');
+                    backdrop.className = 'modal-backdrop fade show';
+                    document.body.appendChild(backdrop);
+                }
+            }
+        });
+    }
+
+    if (confirmDeleteButton) {
+        confirmDeleteButton.addEventListener("click", function() {
+            // Bootstrap-Modal schließen
+            const modal = bootstrap.Modal.getInstance(confirmDeleteModal);
+            if (modal) {
+                modal.hide();
+            }
+
+            // Teilnehmer-ID aus userData oder aus dem Cookie holen
+            const participantId = userData.participantId || getCookie('participantId');
+            
+            // Alle Daten aus der Datenbank löschen, wenn eine ID vorhanden ist
+            if (participantId) {
+                // Wir lassen deleteFromDatabase die Weiterleitung und das Löschen der Cookies übernehmen
+                deleteFromDatabase(participantId);
+                return; // Weitere Ausführung stoppen
+            } else {
+                // Keine ID gefunden, also nur lokale Daten löschen
+                deleteCookie("umfrageAbgeschlossen");
+                deleteCookie("participantId");
+                
+                // Zur Startseite zurückkehren
+                window.location.href = 'index.html';
+            }
+
+            // Timer stoppen, falls er läuft
+            if (timerInterval) {
+                stopTimer();
             }
         });
     }
@@ -818,7 +880,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 gender: formData.get("gender"),
                 hasDyslexia: formData.get("dyslexia")
             };
+
+            // Speichern der Demografiedaten in der Datenbank
+            saveDemographicsToDatabase(userData.demographics);
             
+            // Zur nächsten Phase weitergehen
             proceedToNextPhase();
         });
     }
@@ -914,6 +980,98 @@ document.addEventListener("DOMContentLoaded", function() {
             proceedToNextPhase();
         });
     }
+
+    // Funktion zum Speichern der Demografiedaten in der Datenbank
+    function saveDemographicsToDatabase(demographicsData) {
+        console.log('Sende Demografiedaten:', JSON.stringify(demographicsData));
+        
+        // API-Endpunkt aufrufen
+        fetch('api/teilnehmer.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(demographicsData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Teilnehmer-ID:', data.participantId || data.id);
+            // Eventuell ID in einem Cookie oder localStorage speichern für spätere Verwendung
+            if (data.participantId || data.id) {
+                // ID im Cookie speichern
+                const participantId = data.participantId || data.id;
+                setCookie('participantId', participantId, 7); // Speichert ID für 7 Tage
+                
+                // ID auch im userData-Objekt speichern
+                userData.participantId = participantId;
+            }
+        })
+        .catch(error => {
+            console.error('Fehler beim Speichern der Demografiedaten:', error);
+            alert('Es gab ein Problem beim Speichern der Daten.');
+        });
+    }
+
+    // Funktion zum Löschen der Daten aus der Datenbank
+    function deleteFromDatabase(participantId) {
+        if (!participantId) {
+            console.error('Keine Teilnehmer-ID zum Löschen angegeben');
+            alert('Keine Teilnehmer-ID zum Löschen angegeben');
+            return;
+        }
+
+        // Variable zum Verfolgen des Löschversuchs
+        let deleteAttempted = false;
+
+        fetch('api/teilnehmer.php', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ participantId })
+        })
+        .then(response => {
+            // Markieren, dass wir versucht haben zu löschen
+            deleteAttempted = true;
+            
+            if (!response.ok) {
+                if (response.status === 500) {
+                    return response.json().then(data => {
+                        throw new Error(`Serverfehler: ${data.error || response.statusText}`);
+                    });
+                }
+                if (response.status === 405) {
+                    throw new Error(`Methode nicht erlaubt: DELETE wird vom Server nicht unterstützt`);
+                }
+                throw new Error(`HTTP-Fehler: ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Daten aus der Datenbank gelöscht:', data);
+            if (data.success) {
+                // Alle relevanten Cookies löschen
+                deleteCookie("participantId");
+                deleteCookie("umfrageAbgeschlossen");
+
+                // Zur Hauptseite navigieren
+                window.location.href = 'index.html';
+            }
+        })
+        .catch(error => {
+            console.error('Fehler beim Löschen der Daten aus der Datenbank:', error);
+
+            // Für andere Fehler normale Fehlerbehandlung
+            let errorMessage = error.message || 'Unbekannter Fehler';
+            
+            // Bei Netzwerkfehlern
+            if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
+                errorMessage = 'Verbindung zum Server konnte nicht hergestellt werden. Bitte überprüfen Sie Ihre Internetverbindung und den Server-Status.';
+            }
+            
+            alert(`Fehler beim Löschen der Daten: ${errorMessage}`);
+        });
+    }
     
     // Funktion zum Ausblenden leerer Sektionen
     function hideEmptyQuestionSections() {
@@ -946,5 +1104,14 @@ document.addEventListener("DOMContentLoaded", function() {
             hideEmptyQuestionSections();
         };
     }
+
+    // Initialisierung beim Laden der Seite
+    document.addEventListener("DOMContentLoaded", function() {
+        // Prüfen, ob bereits eine Teilnehmer-ID im Cookie existiert
+        const savedParticipantId = getCookie('participantId');
+        if (savedParticipantId) {
+            userData.participantId = savedParticipantId;
+        }
+    });
 });
 
