@@ -1,10 +1,6 @@
 -- Dyslexie-Studie Datenbankschema
 -- Erstellt eine Datenbank zur Studie über die Wirkung von Schriftarten bei Dyslexie
 
--- Datenbank erstellen
-CREATE DATABASE IF NOT EXISTS dyslexie_studie;
-USE dyslexie_studie;
-
 -- Tabelle für Teilnehmer
 CREATE TABLE IF NOT EXISTS teilnehmer (
     participantId VARCHAR(36) PRIMARY KEY,
