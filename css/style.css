@@ -9,6 +9,10 @@ body {
     margin: 0; /* Entfernt Margin, damit Header und Footer die volle Breite nutzen können */
 }
 
+.decoration-none {
+    text-decoration: none;
+}
+
 /* Fixierter Header */
 .fixed-header {
     position: fixed;
