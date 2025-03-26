@@ -956,7 +956,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 }
 
-
+                saveReadingData(returnData);
                 
                 // Zur nächsten Phase weitergehen
                 questionsForm.reset();
