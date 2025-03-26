@@ -1,10 +1,9 @@
 <?php
 // Datenbankverbindung herstellen
 $servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dyslexie_studie";
-
+$username = "user_api";
+$password = "H3IQ1JgAO5dd3v";
+$dbname = "Umfrage";
 // Verbindung herstellen
 $conn = new mysqli($servername, $username, $password, $dbname);
 

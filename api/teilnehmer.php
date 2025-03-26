@@ -9,7 +9,7 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 // Datenbankverbindung herstellen
 try {
     require_once 'config.php';
-    
+
     // Prüfen, ob $conn existiert und eine gültige Verbindung ist
     if (!isset($conn) || $conn->connect_error) {
         throw new Exception('Datenbankverbindung fehlgeschlagen: ' . ($conn->connect_error ?? 'Keine Verbindung'));
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Endpunkt für die Teilnehmerdaten Speicherung
     /*
     * POST: Speichere die Daten in der Datenbank
-    * @param: alter, geschlecht, dyslexie
+    * @param: hasDyslexia
     * Return: Die ID des Teilnehmers
     */
     try {
@@ -35,19 +35,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($input)) {
             throw new Exception('Keine Daten empfangen');
         }
-        
+
         // Gesendete Daten der Webseite vom aufrufen der funktion auslesen
         $data = json_decode($input, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new Exception('Ungültiges JSON: ' . json_last_error_msg());
         }
-        
+
         // Generiere eine zufällige ID
-        $id = uniqid();
+        $id = uniqid('', true);
 
         // Daten aus dem Request extrahieren
-        $alter = $data['age'] ?? null;
-        $geschlecht = $data['gender'] ?? null; 
         $dyslexie = $data['hasDyslexia'] ?? null;
 
         // Log der empfangenen Daten
@@ -57,19 +55,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $timestamp = date('Y-m-d H:i:s');
 
         // Prepared Statement erstellen
-        $stmt = $conn->prepare("INSERT INTO teilnehmer (participantId, age, gender, hasDyslexia, timestamp) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO Participant (participantId, hasDyslexia, timestamp) VALUES (?, ?, ?)");
         if (!$stmt) {
             throw new Exception('Prepared Statement Fehler: ' . $conn->error);
         }
-        
+
         // Parameter binden
-        $stmt->bind_param("sssss", $id, $alter, $geschlecht, $dyslexie, $timestamp);
+        $stmt->bind_param("sss", $id, $dyslexie, $timestamp);
 
         // Statement ausführen
         if (!$stmt->execute()) {
             throw new Exception('Execute Fehler: ' . $stmt->error);
         }
-        
+
         // Return the ID if successful
         echo json_encode(['participantId' => $id, 'success' => true]);
     } catch (Exception $e) {
@@ -85,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     * DELETE: Lösche die Daten aus der Datenbank
     * @param: participantId
     * Return: Erfolgsmeldung
-    */  
+    */
     try {
         // Prüfen, ob Daten empfangen wurden
         $input = file_get_contents('php://input');
@@ -97,72 +95,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = json_decode($input, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new Exception('Ungültiges JSON: ' . json_last_error_msg());
-        }   
+        }
 
         // ParticipantId aus dem Request extrahieren
         $participantId = $data['participantId'] ?? null;
         if (empty($participantId)) {
             throw new Exception('ParticipantId fehlt');
-        }   
+        }
 
         // Transaktion starten
         $conn->begin_transaction();
 
         try {
             // Zuerst prüfen, ob der Teilnehmer existiert
-            $checkStmt = $conn->prepare("SELECT 1 FROM teilnehmer WHERE participantId = ?");
+            $checkStmt = $conn->prepare("SELECT 1 FROM Participant WHERE participantId = ?");
             $checkStmt->bind_param("s", $participantId);
             $checkStmt->execute();
             $result = $checkStmt->get_result();
-            
+
             if ($result->num_rows === 0) {
                 throw new Exception('Teilnehmer nicht gefunden');
             }
 
             // Hole zuerst alle readingIds für diesen Teilnehmer
-            $readingIdsStmt = $conn->prepare("SELECT readingId FROM leseerfahrung WHERE participantId = ?");
+            $readingIdsStmt = $conn->prepare("SELECT readingId FROM Reading WHERE participantId = ?");
             if (!$readingIdsStmt) {
                 throw new Exception('Prepared Statement Fehler beim Abrufen der readingIds: ' . $conn->error);
             }
-            
+
             $readingIdsStmt->bind_param("s", $participantId);
             $readingIdsStmt->execute();
             $readingIdsResult = $readingIdsStmt->get_result();
-            
+
             // Lösche alle zugehörigen Inhaltsfragen für jeden readingId
             while ($row = $readingIdsResult->fetch_assoc()) {
                 $readingId = $row['readingId'];
-                $deleteQuestions = $conn->prepare("DELETE FROM inhaltsfragen WHERE readingId = ?");
+                $deleteQuestions = $conn->prepare("DELETE FROM Question WHERE readingId = ?");
                 if (!$deleteQuestions) {
                     throw new Exception('Prepared Statement Fehler beim Löschen der Inhaltsfragen: ' . $conn->error);
                 }
                 $deleteQuestions->bind_param("s", $readingId);
                 $deleteQuestions->execute();
             }
-            
+
             // Dann alle Leseerfahrungen dieses Teilnehmers löschen
-            $deleteLeseerfahrung = $conn->prepare("DELETE FROM leseerfahrung WHERE participantId = ?");
-            
-            if (!$deleteLeseerfahrung) {
+            $deleteReading = $conn->prepare("DELETE FROM Reading WHERE participantId = ?");
+
+            if (!$deleteReading) {
                 throw new Exception('Prepared Statement Fehler beim Löschen der Leseerfahrungen: ' . $conn->error);
             }
-            
-            $deleteLeseerfahrung->bind_param("s", $participantId);
-            $deleteLeseerfahrung->execute();
-            
+
+            $deleteReading->bind_param("s", $participantId);
+            $deleteReading->execute();
+
             // Schließlich den Teilnehmer selbst löschen
-            $deleteTeilnehmer = $conn->prepare("DELETE FROM teilnehmer WHERE participantId = ?");
-            
-            if (!$deleteTeilnehmer) {
+            $deleteParticipant = $conn->prepare("DELETE FROM Participant WHERE participantId = ?");
+
+            if (!$deleteParticipant) {
                 throw new Exception('Prepared Statement Fehler beim Löschen des Teilnehmers: ' . $conn->error);
             }
-            
-            $deleteTeilnehmer->bind_param("s", $participantId);
-            $deleteTeilnehmer->execute();
-            
+
+            $deleteParticipant->bind_param("s", $participantId);
+            $deleteParticipant->execute();
+
             // Transaktion bestätigen
             $conn->commit();
-            
+
             // Erfolgsmeldung zurückgeben
             http_response_code(200);
             echo json_encode(['message' => 'Daten erfolgreich gelöscht', 'success' => true]);

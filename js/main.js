@@ -37,8 +37,6 @@ document.addEventListener("DOMContentLoaded", function() {
     let readingTimes = [];
     let userData = {
         demographics: {
-            age: "",
-            gender: "",
             hasDyslexia: ""
         },
         text1: {
@@ -305,17 +303,8 @@ document.addEventListener("DOMContentLoaded", function() {
             
             return result;
         }
-        
-        // Geschlecht formatieren
-        function formatGender(gender) {
-            if (!gender) return 'Keine Angabe';
-            switch(gender) {
-                case 'male': return 'Männlich';
-                case 'female': return 'Weiblich';
-                case 'diverse': return 'Divers';
-                default: return gender;
-            }
-        }
+
+
         
         // Dyslexie formatieren
         function formatDyslexia(hasDyslexia) {
@@ -350,16 +339,6 @@ document.addEventListener("DOMContentLoaded", function() {
                             <div class="mb-4">
                                 <h4>Demographische Angaben</h4>
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-2">
-                                            <strong>Alter:</strong> ${userData.demographics.age || 'Keine Angabe'}
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-2">
-                                            <strong>Geschlecht:</strong> ${formatGender(userData.demographics.gender)}
-                                        </div>
-                                    </div>
                                     <div class="col-md-4">
                                         <div class="mb-2">
                                             <strong>Legasthenie:</strong> ${formatDyslexia(userData.demographics.hasDyslexia)}
@@ -876,8 +855,6 @@ document.addEventListener("DOMContentLoaded", function() {
             // Formulardaten sammeln
             const formData = new FormData(demographicsForm);
             userData.demographics = {
-                age: formData.get("age"),
-                gender: formData.get("gender"),
                 hasDyslexia: formData.get("dyslexia")
             };
 
@@ -944,23 +921,42 @@ document.addEventListener("DOMContentLoaded", function() {
                     questionsForm.classList.add('was-validated');
                     return;
                 }
-                
+
+
+
+                let returnData;
+
                 // Daten sammeln und speichern
                 if (currentPhase === 4) {
-                    userData.text1.readingExperience = {
-                        readability: readability,
-                        effort: effort,
-                        fontLiking: fontLiking,
-                        comments: formData.get("comments") || "" // Kommentare sind optional
-                    };
+
+                    returnData = {
+                        TeilnehmerID: userData.participantId,
+                        Lesedaten: {
+                            Textnummer: currentPhase === 1,
+                            Schriftart: userData.text1.font,
+                            Lesezeit: userData.text1.readingTime,
+                            Lesbarkeit: readability,
+                            EmpfundeneLesegeschwindigkeit: effort,
+                            Bewertung: fontLiking,
+                            Kommentar: formData.get("comments") || ""
+                        }
+                    }
                 } else {
-                    userData.text2.readingExperience = {
-                        readability: readability,
-                        effort: effort,
-                        fontLiking: fontLiking,
-                        comments: formData.get("comments") || "" // Kommentare sind optional
-                    };
+                    returnData = {
+                        TeilnehmerID: userData.participantId,
+                        Lesedaten: {
+                            Textnummer: currentPhase === 2,
+                            Schriftart: userData.text2.font,
+                            Lesezeit: userData.text2.readingTime,
+                            Lesbarkeit: readability,
+                            EmpfundeneLesegeschwindigkeit: effort,
+                            Bewertung: fontLiking,
+                            Kommentar: formData.get("comments") || ""
+                        }
+                    }
                 }
+
+
                 
                 // Zur nächsten Phase weitergehen
                 questionsForm.reset();
@@ -980,6 +976,25 @@ document.addEventListener("DOMContentLoaded", function() {
             proceedToNextPhase();
         });
     }
+
+    function saveReadingData(readingdata){
+        console.log('Sende Lesedaten:', JSON.stringify(readingdata));
+
+        // API-Endpunkt aufrufen
+        fetch('api/Lesung.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(readingdata)
+        })
+        .catch(error => {
+            console.error('Fehler beim Speichern der lesedaten:', error);
+            alert('Es gab ein Problem beim Speichern der Daten.');
+        });
+    }
+
+
 
     // Funktion zum Speichern der Demografiedaten in der Datenbank
     function saveDemographicsToDatabase(demographicsData) {
