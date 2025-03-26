@@ -44,9 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Generiere eine zufällige ID
         $id = uniqid('', true);
-        $participantID = $input['TeilnehmerID'];
+        $participantID = $data['TeilnehmerID'];
 
-        $readingData = $input['Lesedaten'];
+        $readingData = $data['Lesedaten'];
 
         $stmt = $conn->prepare("INSERT INTO `Reading`(`readingId`, `participantId`, `textNumber`, `fontName`, `readingTimeInSec`, `readability`, `perceivedReadingSpeed`, `fontLiking`, `comments`) VALUES (?,?,?,?,?,?,?,?,?)");
         if (!$stmt) {
