@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = uniqid('', true);
 
         // Daten aus dem Request extrahieren
-        $dyslexie = $data['hasDyslexia'] == 'yes' ? true : false;
+        $dyslexie = $data['hasDyslexia'] == 'yes' ? 1 : 0;
 
         // Log der empfangenen Daten
         error_log("Erhaltene Daten: " . print_r($data, true));
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Parameter binden
-        $stmt->bind_param("sbs", $id, $dyslexie, $timestamp);
+        $stmt->bind_param("sis", $id, $dyslexie, $timestamp);
 
         // Statement ausführen
         if (!$stmt->execute()) {
