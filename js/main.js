@@ -945,8 +945,6 @@ document.addEventListener("DOMContentLoaded", function() {
                             Kommentar: formData.get("comments") || ""
                         }
                     }
-                    let readingId = saveReadingDataToDatabase(returnData);
-                    saveAnswersToDatabase(readingId ,userData.text1.contentQuestions.answers, 1);
                 } else {
                     userData.text1.readingExperience = {
                         readability: readability,
@@ -966,11 +964,10 @@ document.addEventListener("DOMContentLoaded", function() {
                             Kommentar: formData.get("comments") || ""
                         }
                     }
-                    let readingId = saveReadingDataToDatabase(returnData);
-                    saveAnswersToDatabase(readingId ,userData.text1.contentQuestions.answers, 2);
                 }
 
-
+                let readingId = saveReadingDataToDatabase(returnData);
+                saveAnswersToDatabase(readingId ,userData.text1.contentQuestions.answers);
 
                 userData.text1.contentQuestions
                 
@@ -993,14 +990,14 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    function saveAnswersToDatabase(ReadingID,Questions, textNumber){
-        Questions.forEach( (q, index) =>{
-            const answerKey = `q${textNumber}_${index}`;
+    function saveAnswersToDatabase(ReadingID,Questions){
+        console.log('Sende Antworten:', JSON.stringify(Questions));
 
+        Object.entries(Questions).forEach(([key, q]) => {
             let questionData = {
                 LeseID: ReadingID,
                 Frage:{
-                    Fragenummer: answerKey,
+                    Fragenummer: key,
                     Antwort: q.givenAnswer,
                     RichtigeAntwort: q.correctAnswer
                 }
@@ -1013,11 +1010,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 },
                 body: JSON.stringify(questionData)
             })
-            .catch(error => {
-                console.error('Fehler beim Speichern der lesedaten:', error);
-                alert('Es gab ein Problem beim Speichern der Daten.');
-            });
-        });
+                .catch(error => {
+                    console.error('Fehler beim Speichern der lesedaten:', error);
+                    alert('Es gab ein Problem beim Speichern der Daten.');
+                });
+        })
     }
 
     function saveReadingDataToDatabase(readingdata){
