@@ -966,8 +966,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 }
 
-                let readingId = saveReadingDataToDatabase(returnData);
-                saveAnswersToDatabase(readingId ,userData.text1.contentQuestions.answers);
+                saveReadingDataToDatabase(returnData)
+                    .then( id =>{
+                        saveAnswersToDatabase(id ,userData.text1.contentQuestions.answers);
+                    });
+
 
                 userData.text1.contentQuestions
                 
@@ -1017,27 +1020,26 @@ document.addEventListener("DOMContentLoaded", function() {
         })
     }
 
-    function saveReadingDataToDatabase(readingdata){
+    async function saveReadingDataToDatabase(readingdata) {
         console.log('Sende Lesedaten:', JSON.stringify(readingdata));
 
-        let ID;
-        // API-Endpunkt aufrufen
-        fetch('api/Lesung.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(readingdata)
-        })
-        .then(response => response.json())
-        .then(data => {
-            ID = data.readingId
-        })
-        .catch(error => {
-            console.error('Fehler beim Speichern der lesedaten:', error);
+        try {
+            const ID = await fetch('api/Lesung.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(readingdata)
+            })
+                .then(response => response.json())
+                .then(data => data.readingId);
+
+            return ID;
+        } catch (error) {
+            console.error('Fehler beim Speichern der Lesedaten:', error);
             alert('Es gab ein Problem beim Speichern der Daten.');
-        });
-        return ID;
+            throw error; // Fehler weitergeben
+        }
     }
 
 

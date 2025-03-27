@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception('Prepared Statement Fehler: ' . $conn->error);
         }
 
-        $stmt->bind_param("ssiii", $id, $readingID, $questionData['Fragenummer'], $questionData['Antwort'], $questionData['RichtigeAntwort']);
+        $stmt->bind_param("sssss", $id, $readingID, $questionData['Fragenummer'], $questionData['Antwort'], $questionData['RichtigeAntwort']);
 
         // Statement ausführen
         if (!$stmt->execute()) {
