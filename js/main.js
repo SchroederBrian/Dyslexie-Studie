@@ -141,7 +141,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const availableFonts = [
         { name: "Arial", class: "font-arial" },
         { name: "Times New Roman", class: "font-times" },
-        { name: "Comic Sans MS", class: "font-comic" },
         { name: "OpenDyslexic", class: "font-opendyslexic" }
     ];
     
@@ -928,7 +927,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // Daten sammeln und speichern
                 if (currentPhase === 4) {
-
+                    userData.text1.readingExperience = {
+                        readability: readability,
+                        effort: effort,
+                        fontLiking: fontLiking,
+                        comments: formData.get("comments") || "" // Kommentare sind optional
+                    };
                     returnData = {
                         TeilnehmerID: userData.participantId,
                         Lesedaten: {
@@ -941,7 +945,15 @@ document.addEventListener("DOMContentLoaded", function() {
                             Kommentar: formData.get("comments") || ""
                         }
                     }
+                    let readingId = saveReadingDataToDatabase(returnData);
+                    saveAnswersToDatabase(readingId ,userData.text1.contentQuestions.answers, 1);
                 } else {
+                    userData.text1.readingExperience = {
+                        readability: readability,
+                        effort: effort,
+                        fontLiking: fontLiking,
+                        comments: formData.get("comments") || "" // Kommentare sind optional
+                    };
                     returnData = {
                         TeilnehmerID: userData.participantId,
                         Lesedaten: {
@@ -954,9 +966,13 @@ document.addEventListener("DOMContentLoaded", function() {
                             Kommentar: formData.get("comments") || ""
                         }
                     }
+                    let readingId = saveReadingDataToDatabase(returnData);
+                    saveAnswersToDatabase(readingId ,userData.text1.contentQuestions.answers, 2);
                 }
 
-                saveReadingData(returnData);
+
+
+                userData.text1.contentQuestions
                 
                 // Zur nächsten Phase weitergehen
                 questionsForm.reset();
@@ -977,9 +993,37 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    function saveReadingData(readingdata){
+    function saveAnswersToDatabase(ReadingID,Questions, textNumber){
+        Questions.forEach( (q, index) =>{
+            const answerKey = `q${textNumber}_${index}`;
+
+            let questionData = {
+                LeseID: ReadingID,
+                Frage:{
+                    Fragenummer: answerKey,
+                    Antwort: q.givenAnswer,
+                    RichtigeAntwort: q.correctAnswer
+                }
+            }
+
+            fetch('api/fragen.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(questionData)
+            })
+            .catch(error => {
+                console.error('Fehler beim Speichern der lesedaten:', error);
+                alert('Es gab ein Problem beim Speichern der Daten.');
+            });
+        });
+    }
+
+    function saveReadingDataToDatabase(readingdata){
         console.log('Sende Lesedaten:', JSON.stringify(readingdata));
 
+        let ID;
         // API-Endpunkt aufrufen
         fetch('api/Lesung.php', {
             method: 'POST',
@@ -988,10 +1032,15 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             body: JSON.stringify(readingdata)
         })
+        .then(response => response.json())
+        .then(data => {
+            ID = data.readingId
+        })
         .catch(error => {
             console.error('Fehler beim Speichern der lesedaten:', error);
             alert('Es gab ein Problem beim Speichern der Daten.');
         });
+        return ID;
     }
 
 

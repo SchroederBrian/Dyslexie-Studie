@@ -59,6 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$stmt->execute()) {
             throw new Exception('Execute Fehler: ' . $stmt->error);
         }
+        // Return the ID if successful
+        echo json_encode(['readingId' => $id, 'success' => true]);
 
 
     }catch (Exception $e) {
