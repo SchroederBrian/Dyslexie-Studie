@@ -972,7 +972,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     returnData = {
                         TeilnehmerID: userData.participantId,
                         Lesedaten: {
-                            Textnummer: currentPhase === 1,
+                            Textnummer:  1,
                             Schriftart: userData.text1.font,
                             Lesezeit: userData.text1.readingTime,
                             Lesbarkeit: readability,
@@ -991,7 +991,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     returnData = {
                         TeilnehmerID: userData.participantId,
                         Lesedaten: {
-                            Textnummer: currentPhase === 2,
+                            Textnummer:  2,
                             Schriftart: userData.text2.font,
                             Lesezeit: userData.text2.readingTime,
                             Lesbarkeit: readability,
