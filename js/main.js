@@ -102,6 +102,28 @@ document.addEventListener("DOMContentLoaded", function() {
                     "Er entdeckt einen Schatz."
                 ],
                 "correctAnswer": "Er hilft dem alten Mann, das Licht zu bewahren."
+            },
+            {
+                "question": "Welche Farbe hatte das Dach des Leuchtturms?",
+                "type": "radio",
+                "options": [
+                    "Grün",
+                    "Braun",
+                    "Rot",
+                    "Wurde nicht genannt"
+                ],
+                "correctAnswer": "Grün"
+            },
+            {
+                "question": "Welches Wetter herrschte während der Geschichte?",
+                "type": "radio",
+                "options": [
+                    "Strahlende Sonne",
+                    "Bewölkt",
+                    "Stürmisch",
+                    "Wurde nicht genannt"
+                ],
+                "correctAnswer": "Strahlende Sonne"
             }
         ],
         2: [
