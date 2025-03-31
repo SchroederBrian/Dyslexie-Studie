@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     "Stürmisch",
                     "Wurde nicht genannt"
                 ],
-                "correctAnswer": "Strahlende Sonne"
+                "correctAnswer": "Stürmisch"
             }
         ],
         2: [
@@ -155,7 +155,19 @@ document.addEventListener("DOMContentLoaded", function() {
                     "Sie verkauft das geerbte Haus."
                 ],
                 "correctAnswer": "Sie wird Teil der Dorfgemeinschaft."
-            }
+            },
+            {
+                "question": "Was gibt die Protagonistin der Katze am ersten Abend?",
+                "type": "radio",
+                "options": ["Ein Stück Wurst", "Katzenfutter", "Kochschinken", "Thunfisch"],
+                "correctAnswer": "Thunfisch"
+            },
+            {
+                "question": "Wie heißt die Lehrerin in Dorf?",
+                "type": "radio",
+                "options": ["Gerda", "Mia", "Gerlinde", "Es wurde kein Name Genannt"],
+                "correctAnswer": "Es wurde kein Name Genannt"
+            },
         ]
     };
     
