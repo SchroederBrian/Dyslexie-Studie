@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Endpunkt für die Teilnehmerdaten Speicherung
     /*
     * POST: Speichere die Daten in der Datenbank
-    * @param: hasDyslexia
+    * @param: hasDyslexia, isEmployee
     * Return: Die ID des Teilnehmers
     */
     try {
@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Daten aus dem Request extrahieren
         $dyslexie = $data['hasDyslexia'] == 'yes' ? 1 : 0;
+        $isEmployee = $data['isEmployee'] == 'yes' ? 1 : 0;
 
         // Log der empfangenen Daten
         error_log("Erhaltene Daten: " . print_r($data, true));
@@ -55,13 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $timestamp = date('Y-m-d H:i:s');
 
         // Prepared Statement erstellen
-        $stmt = $conn->prepare("INSERT INTO Participant (participantId, hasDyslexia, timestamp) VALUES (?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO Participant (participantId, hasDyslexia, timestamp, employee) VALUES (?, ?, ?, ?)");
         if (!$stmt) {
             throw new Exception('Prepared Statement Fehler: ' . $conn->error);
         }
 
         // Parameter binden
-        $stmt->bind_param("sis", $id, $dyslexie, $timestamp);
+        $stmt->bind_param("sisi", $id, $dyslexie, $timestamp, $isEmployee);
 
         // Statement ausführen
         if (!$stmt->execute()) {

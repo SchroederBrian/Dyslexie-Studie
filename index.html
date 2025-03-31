@@ -234,7 +234,7 @@
                                 <div class="rating-container">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="effort" id="effort1" value="1" required>
-                                        <label class="form-check-label" for="effort1">1 <small>(Deutlich schneller als sont)</small></label>
+                                        <label class="form-check-label" for="effort1">1 <small>(Deutlich langsamer als sonst)</small></label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="effort" id="effort2" value="2">
@@ -250,7 +250,7 @@
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="effort" id="effort5" value="5">
-                                        <label class="form-check-label" for="effort5">5 <small>(Deutlich langsamer als sonst)</small></label>
+                                        <label class="form-check-label" for="effort5">5 <small>(Deutlich schneller als sonst)</small></label>
                                     </div>
                                     <div class="invalid-feedback">
                                         Bitte bewerten Sie ihre Lesegeschwindigkeit.
@@ -287,6 +287,12 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Kommentarfeld -->
+                            <div class="mb-4 mt-4">
+                                <label for="comments" class="form-label">Weitere Anmerkungen (optional):</label>
+                                <textarea class="form-control" id="comments" name="comments" rows="3" placeholder="Haben Sie weitere Anmerkungen zur Lesbarkeit oder zum Text?"></textarea>
+                            </div>
                         </div>
                         
                         <div class="question-section">
@@ -303,12 +309,7 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Kommentarfeld -->
-                        <div class="mb-4 mt-4">
-                            <label for="comments" class="form-label">Weitere Anmerkungen (optional):</label>
-                            <textarea class="form-control" id="comments" name="comments" rows="3" placeholder="Haben Sie weitere Anmerkungen zur Lesbarkeit oder zum Text?"></textarea>
-                        </div>
+
                         
                         <!-- Submit-Button -->
                         <div class="text-center">

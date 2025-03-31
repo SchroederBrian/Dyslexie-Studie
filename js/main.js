@@ -850,11 +850,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 demographicsForm.classList.add('was-validated');
                 return;
             }
-            
+
+            const params = new URLSearchParams(window.location.search);
             // Formulardaten sammeln
             const formData = new FormData(demographicsForm);
             userData.demographics = {
-                hasDyslexia: formData.get("dyslexia")
+                hasDyslexia: formData.get("dyslexia"),
+                isEmployee: params.get("isEmployee") === "true" ? "yes" : "no"
             };
 
             // Speichern der Demografiedaten in der Datenbank
