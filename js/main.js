@@ -982,7 +982,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         }
                     }
                 } else {
-                    userData.text1.readingExperience = {
+                    userData.text2.readingExperience = {
                         readability: readability,
                         effort: effort,
                         fontLiking: fontLiking,
@@ -1002,13 +1002,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 }
 
+
                 saveReadingDataToDatabase(returnData)
                     .then( id =>{
                         saveAnswersToDatabase(id ,userData.text1.contentQuestions.answers);
                     });
 
-
-                userData.text1.contentQuestions
                 
                 // Zur nächsten Phase weitergehen
                 questionsForm.reset();
