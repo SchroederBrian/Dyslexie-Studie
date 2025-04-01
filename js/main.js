@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const params = new URLSearchParams(window.location.search);
 
-    if(!getCookie("isEmployee")){
+    if(getCookie("isEmployee") == null){
         setCookie("isEmployee", params.get("isEmployee") === "true" ? "yes" : "no");
     }
 
@@ -900,7 +900,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const formData = new FormData(demographicsForm);
             userData.demographics = {
                 hasDyslexia: formData.get("dyslexia"),
-                isEmployee: getCookie("isEmployee") || "no"
+                isEmployee: getCookie("isEmployee") != null?getCookie("isEmployee") : "no"
             };
 
             // Speichern der Demografiedaten in der Datenbank
