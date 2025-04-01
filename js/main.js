@@ -895,7 +895,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const formData = new FormData(demographicsForm);
             userData.demographics = {
                 hasDyslexia: formData.get("dyslexia"),
-                isEmployee: getCookie("isEmployee")
+                isEmployee: getCookie("isEmployee") || "no"
             };
 
             // Speichern der Demografiedaten in der Datenbank
