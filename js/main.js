@@ -1015,7 +1015,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 saveReadingDataToDatabase(returnData)
                     .then( id =>{
-                        saveAnswersToDatabase(id ,userData.text1.contentQuestions.answers);
+                        if (currentPhase === 4){
+                            saveAnswersToDatabase(id ,userData.text1.contentQuestions.answers);
+                        }else{
+                            saveAnswersToDatabase(id ,userData.text2.contentQuestions.answers);
+                        }
                     });
 
                 
