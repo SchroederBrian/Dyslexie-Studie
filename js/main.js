@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "correctAnswer": "Jonas"
             },
             {
-                "question": "Was entdeckt Jonas im Leuchtturm?",
+                "question": "Was entdeckt der Protagonist im Leuchtturm?",
                 "type": "radio",
                 "options": ["Eine Schatzkarte", "Ein altes Tagebuch", "Eine versteckte Tür", "Einen alten Mann"],
                 "correctAnswer": "Einen alten Mann"
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "correctAnswer": "Sie glauben, dass dort Geister leben."
             },
             {
-                "question": "Welche Aufgabe übernimmt Jonas am Ende der Geschichte?",
+                "question": "Welche Aufgabe übernimmt der Protagonist am Ende der Geschichte?",
                 "type": "radio",
                 "options": [
                     "Er bewacht den Leuchtturm.",
