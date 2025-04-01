@@ -1,7 +1,12 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     const params = new URLSearchParams(window.location.search);
-    setCookie("isEmployee", params.get("isEmployee") === "true" ? "yes" : "no");
+
+    if(!getCookie("isEmployee")){
+        setCookie("isEmployee", params.get("isEmployee") === "true" ? "yes" : "no");
+    }
+
+
 
 
     // Container-Elemente
