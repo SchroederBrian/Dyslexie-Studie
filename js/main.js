@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
+
+    const params = new URLSearchParams(window.location.search);
+    setCookie("isEmployee", params.get("isEmployee") === "true" ? "yes" : "no");
+
+
     // Container-Elemente
     const content = document.getElementById("content");
     const formular = document.getElementById("formular");
@@ -885,12 +890,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
-            const params = new URLSearchParams(window.location.search);
+
             // Formulardaten sammeln
             const formData = new FormData(demographicsForm);
             userData.demographics = {
                 hasDyslexia: formData.get("dyslexia"),
-                isEmployee: params.get("isEmployee") === "true" ? "yes" : "no"
+                isEmployee: getCookie("isEmployee")
             };
 
             // Speichern der Demografiedaten in der Datenbank
@@ -1202,6 +1207,7 @@ document.addEventListener("DOMContentLoaded", function() {
             hideEmptyQuestionSections();
         };
     }
+
 
     // Initialisierung beim Laden der Seite
     document.addEventListener("DOMContentLoaded", function() {
